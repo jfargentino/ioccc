@@ -10,7 +10,7 @@ _do_one () {
     if [[ -e self-"$k" ]]; then
         ./self-"$k" | sed '/^$/d' > self-"$k".d
         if [[ -f self-"$k".d ]]; then
-            diff -B --strip-trailing-cr self-"$k".c self-"$k".d > self-"$k".e
+            diff -B -Z --strip-trailing-cr self-"$k".c self-"$k".d > self-"$k".e
             sz=$(wc -c < self-"$k".e)
             if [[ $sz -eq 0 ]]; then
                 echo -e "\e[42m###\e[0m\e[32mself-$k\e[0m"
