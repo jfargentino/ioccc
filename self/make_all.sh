@@ -41,3 +41,5 @@ else
         _do_one "$n"
     done
 fi
+
+# ./split_all.sh && ./make_all.sh && ll *.e

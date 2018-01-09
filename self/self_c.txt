@@ -16,10 +16,9 @@ p="p=%c%s%c;main(){printf(p,34,p,34);}";main(){printf(p,34,p,34);}
 main(){char q=34,n=10,*a="main(){char q=34,n=10,*a=%c%s%c;printf(a,q,a,q,n);}%c";printf(a,q,a,q,n);}
 
 
-//Author: Unknown
+//Author: Unknown (self-03.c)
 
 main(){char*a="main(){char*a=%c%s%c;int b='%c';printf(a,b,a,b,b);}";int b='"';printf(a,b,a,b,b);}
-
 
 //Author: Dario Dariol
 
@@ -41,9 +40,10 @@ char *p="char *p=%c%s%c;main(){printf(p,34,p,34);}";main(){printf(p,34,p,34);}
 main(a){a="main(a){a=%c%s%c;printf(a,34,a,34);}";printf(a,34,a,34);}
 
 
-//Author: Unknown
+//Author: Unknown (self-08.c)
 
-char f[] = "char f[] =%c%c%s%c;%cmain() {printf(f,10,34,f,34,10,10);}%c";   
+char f[] =
+"char f[] =%c%c%s%c;%cmain() {printf(f,10,34,f,34,10,10);}%c";   
 main() {printf(f,10,34,f,34,10,10);}
 
 
@@ -211,7 +211,7 @@ putchar(34); putchar(59); for(i=0 ; i<strlen(x); ++i) putchar(x[i]); putchar(10)
 main(){char*s="main(){char*s=%c%s%c;%cprintf(%c%s%c,34,s,34,10,34,s,34,10);}%c";
 printf("main(){char*s=%c%s%c;%cprintf(%c%s%c,34,s,34,10,34,s,34,10);}%c",34,s,34,10,34,s,34,10);}
 
-//Author: John Hagerman
+//Author: John Hagerman (self-29.c)
 
 #define p(s) printf("%s\n",s);
 #define q(v,s) printf("r(%s,%s)\n",#v,s);
@@ -221,7 +221,8 @@ r(x,#define p(s) printf("%s\n",s);)
 r(y,#define q(v,s) printf("r(%s,%s)\n",#v,s);)
 
 r(z,#define r(v,s) char*v=#s;) 
-r(n,#define m main(){p(x)p(y)p(z)p(n)q(x,x)q(y,y)q(z,z)q(n,n)p("m")}) m 
+r(n,#define m main(){p(x)p(y)p(z)p(n)q(x,x)q(y,y)q(z,z)q(n,n)p("m")})
+m
 
 
 //Author: Xiao Zhiwei
