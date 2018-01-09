@@ -10,5 +10,6 @@ for n in $( seq 0 $N ); do
     fi
     sed -i '/\/\/Author.*$/d' "self-$nn.c"
     sed -i '/\/\/Notes.*$/d' "self-$nn.c"
+    sed -i '/^$/d' "self-$nn.c"
 done
 
