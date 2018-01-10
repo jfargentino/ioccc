@@ -1,0 +1,43 @@
+Iterating quines
+
+Several people have had the idea of creating a sequence, p[0]...p[n], of programs, such that the output of p[i] is
+the source for p[i+1] 0 <= i < n, and the output of p[n] is the source for p[0]. 
+
+Author: Joseph deu Ngoc 
+
+/* Self-printing program by Joseph Deu Ngoc */
+/* Program Number: 0 */
+#define MAXPROGRAMS 4
+
+void main() {
+  char a='"';
+  char b='\\';
+  char c='\n';
+  char *d="/* Self-printing program by Joseph Deu Ngoc */%c/* Program Number: %d */%c#define MAXPROGRAMS %d%c%cvoid main() {%c  char a='%c';%c  char b='%c%c';%c  char c='%cn';%c  char *d=%c%s%c;%c  int e=%d;%c  e=(e+1)%%MAXPROGRAMS;%c  printf(d,c,e,c,MAXPROGRAMS,c,c,c,a,c,b,b,c,b,c,a,d,a,c,e,c,c,c,c);%c}%c";
+  int e=0;
+  e=(e+1)%MAXPROGRAMS;
+  printf(d,c,e,c,MAXPROGRAMS,c,c,c,a,c,b,b,c,b,c,a,d,a,c,e,c,c,c,c);
+}
+
+Author:  Wang TianXing (gztxwang@public1.guangzhou.gd.cn)
+Note:C-Pascal Pair
+
+the C
+
+main(){char*p="program p;begin writeln(%cmain(){char*p=%c%s%c;
+printf(p,39,34,p,34,39);}%c)end.";printf(p,39,34,p,34,39);}
+
+the pascal
+
+program p;begin writeln('main(){char*p="program p;begin writeln(%cmain(){char*p=
+%c%s%c;
+printf(p,39,34,p,34,39);}%c)end.";
+printf(p,39,34,p,34,39);}')end.
+
+Author: bmckeon@unix1.tcd.ie (Brendan McKeon)
+Notes: procudes C file rep.c, which is compiled to give a.out, which is
+run to produce a copy of the original script.  Must be run from the current directory, or with a 'qualified' pathname, such as "../rep.sh" or "bin/rep.sh". It prpbably won't work if you have it on your PATH and run it from a different directory - as it uses its argv[0] to open itself for input to build the C program.
+
+#!/bin/sh
+echo 'main(){printf("%s","'`sed 's/["\\\\]/\\\\&/g;s/$/\\\\n/'\
+<$0|tr -d '\\012'`'");}'>rep.c;cc rep.c&&./a.out
