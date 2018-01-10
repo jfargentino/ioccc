@@ -6,7 +6,7 @@ _do_one () {
     else
         k=$1
     fi
-    cc self-"$k".c -o self-"$k" 2> self-"$k".d
+    cc -trigraphs self-"$k".c -o self-"$k" 2> self-"$k".d
     if [[ -e self-"$k" ]]; then
         ./self-"$k" | sed '/^$/d' > self-"$k".d
         if [[ -f self-"$k".d ]]; then
@@ -30,12 +30,16 @@ _do_one () {
 }
 
 if [[ $# -eq 0 ]]; then
-    N=63
-    n=0
+    # self-56 to self-59 are palindromes, only self-58 build
+    # the last one is empty, penultimate and the one before are backards
+    N=55
+    # IIRC, self-00 and self-11 are for old system, they do not build
+    n=2
     while [[ $n -le $N ]]; do
         _do_one "$n"
         n=$(( n + 1 ))
     done
+    _do_one 58
 else
     for n in "$@"; do
         _do_one "$n"

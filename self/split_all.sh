@@ -9,7 +9,7 @@ for n in $( seq 0 $N ); do
         nn=$n
     fi
     sed -i '/\/\/Author.*$/d' "self-$nn.c"
-    sed -i '/\/\/Notes.*$/d' "self-$nn.c"
+    sed -i '/\/\/Note.*$/d' "self-$nn.c"
     sed -i '/^$/d' "self-$nn.c"
 done
 

@@ -526,8 +526,8 @@ main() {
 }
 
 
-//Author: Dave Jones
-Note: No ASCII codes used.  Bootstrapped up, trying to find the bootstrapper.
+//Author: Dave Jones (self-40)
+//Note: No ASCII codes used.  Bootstrapped up, trying to find the bootstrapper.
 
 
 /* This program prints its source. */
@@ -563,7 +563,7 @@ break;\n\t\tdefault:   putchar(ch);    count +=1; break;\n\t\
 }
 
 
-/* Express the string, substituting a quotation of the string
+/* Express the string, substituting a quotation of the string 
  * for the character 'Z'.  Breaks the literal into lines of no
  * more than 60 chars.
  */
@@ -578,28 +578,28 @@ express_string(str)
     {
 
       if(ch == 'Z' && !is_quoted)
-        {
-          int count = 1;
-          char* ptr = str;
-          char ch;
-          putchar('"');
-          while(ch = *ptr++)
-            {
-              switch(ch)
-              {
-                case '\n': printf("\\n");  count +=2; break;
-                case '\t': printf("\\t");  count +=2; break;
-                case '\\': printf("\\\\"); count +=2; break;
-                case '"':  printf("\\\""); count +=2; break;
-                default:   putchar(ch);    count +=1; break;
-              }
-              if(count >= 59)
-                { printf("\\\n");
-                  count = 0;
-                }
-            }
-          putchar('"');
-        }
+	{
+	  int count = 1;
+	  char* ptr = str;
+	  char ch;
+	  putchar('"');
+	  while(ch = *ptr++)
+	    {
+	      switch(ch)
+	      {
+		case '\n': printf("\\n");  count +=2; break;
+		case '\t': printf("\\t");  count +=2; break;
+		case '\\': printf("\\\\"); count +=2; break;
+		case '"':  printf("\\\""); count +=2; break;
+		default:   putchar(ch);    count +=1; break;
+	      }
+	      if(count >= 59)
+		{ printf("\\\n");
+		  count = 0;
+		}
+	    }
+	  putchar('"');
+	}
 
       else putchar(ch);
       is_quoted = ( ch == '\'');
@@ -660,7 +660,8 @@ while(str[i] != 0){
 
 
 
-//Author: Don herbison-Evans
+//Author: Don herbison-Evans (seld-42)
+//Note: do not build
 
 
 /*              itself.c
@@ -762,7 +763,8 @@ int  asis;
 }
 
 
-//Author: josh@cs.rutgers.edu
+//Author: josh@cs.rutgers.edu (self-43)
+//Note: quite quine
 
 #include "stdio.h" 
 
@@ -875,7 +877,7 @@ main(){char*c="\\\"#include<stdio.h>%cmain(){char*c=%c%c%c%.102s%cn%c;printf(c+2
 
 
 //Author: Soichiro Hidaka
-Note: might only compile in gcc
+//Note: might only compile in gcc
 
 g(char *s1,char *s2){  printf(s1);  putchar(34);  printf(s1);  putchar(34);  putchar(44);  putchar(34);  printf(s2);  putchar(34);  printf(s2); putchar(10);}main () {  g("g(char *s1,char *s2){  printf(s1);  putchar(34);  printf(s1);  putchar(34);  putchar(44);  putchar(34);  printf(s2);  putchar(34);  printf(s2); putchar(10);}main () {  g(",");}");}
 
@@ -898,7 +900,8 @@ char*f="main(){putchar('c');putchar('h');putchar('a');putchar('r');putchar('*');
 main(){putchar('c');putchar('h');putchar('a');putchar('r');putchar('*');putchar('f');putchar('=');putchar(34);printf(f);putchar(34);putchar(';');putchar(10);printf(f);putchar(10);}
 
 
-//Author: Craig S. Kaplan
+//Author: Craig S. Kaplan (self-49)
+//Note: segfault
 
 char*f="char*f=;main(){f[7]=0;printf(f);putchar(34);f[7]=';';printf(f);putchar(34);f[8]=0;printf(&f[7]);f[8]='m';putchar(10);printf(&f[8]);putchar(10);}";
 main(){f[7]=0;printf(f);putchar(34);f[7]=';';printf(f);putchar(34);f[8]=0;printf(&f[7]);f[8]='m';putchar(10);printf(&f[8]);putchar(10);}
@@ -912,7 +915,7 @@ main(){printf(f,a,c,c,c,b,a,f,a,b,b);}
 
 
 //Author: Craig S. Kaplan 
-
+//Notes: initially str main was ending with ' 0}', trailing space removed
 char*lines[]={
 "char*lines[]={",
 "%c%s%c%c%c",
@@ -928,7 +931,7 @@ char*lines[]={
 "puts(lines[idx]);",
 "}",
 "}",
- 0};
+0};
 main(){
 int idx;
 puts(lines[0]);
@@ -943,8 +946,7 @@ puts(lines[idx]);
 
 
 //Author:Patrik Lundin (lundin@ludd.luth.se)
-Note: When I wrote it, the point was to try to do it
-without using printf, and with <cr>:s.
+//Note: When I wrote it, the point was to try to do it without using printf, and with <cr>:s.
 
 void a(char*b,int d,int e,int f){char*c=b;for(;*c;c++){if(!d&*c==68)putchar(
 92),putchar('\n');if(!d&*c==92)putchar(92);if(*c==d)a(b,0,0,0);else putchar(
@@ -961,122 +963,122 @@ DCAC;a(p,65,67,68);}";a(p,65,67,68);}
 //Notes: uses no ascii codes or printf
 
 char *instructions[] = {
-        "#include <stdio.h>",
-        "void copier( s)",
-        "\tchar *s[];",
-        "{",
-        "\tchar **p, *q;",
-        "\tfputs( \"char *instructions[] = {\\n\", stdout);",
-        "\tfor( p = s; *p; p++)",
-        "\t{",
-        "\t\tfputs( \"\\t\\\"\", stdout);",
-        "\t\tfor( q = *p; *q; q++)",
-        "\t\t{",
-        "\t\t\tswitch(*q)",
-        "\t\t\t{",
-        "\t\t\tcase '\\t':",
-        "\t\t\t\tfputs( \"\\\\t\", stdout);",
-        "\t\t\t\tbreak;",
-        "\t\t\tcase '\\\\':",
-        "\t\t\t\tfputs( \"\\\\\\\\\", stdout);",
-        "\t\t\t\tbreak;",
-        "\t\t\tcase '\"':",
-        "\t\t\t\tfputs( \"\\\\\\\"\", stdout);",
-        "\t\t\t\tbreak;",
-        "\t\t\tcase '\\n':",
-        "\t\t\t\tfputs( \"\\\\n\", stdout);",
-        "\t\t\t\tbreak;",
-        "\t\t\tdefault:",
-        "\t\t\t\tfputc( *q, stdout);",
-        "\t\t\t\tbreak;",
-        "\t\t\t}",
-        "\t\t}",
-        "\t\tfputs( \"\\\",\\n\", stdout);",
-        "\t}",
-        "\tfputs( \"\\t0\\n};\\n\", stdout);",
-        "}",
-        "void interp( s)",
-        "\tchar *s[];",
-        "{",
-        "\tchar **p = s;",
-        "\tfor( p = s; *p; p++)",
-        "\t{",
-        "\t\tfputs( *p, stdout);",
-        "\t\tfputc( '\\n', stdout);",
-        "\t}",
-        "}",
-        "int main( ac, av)",
-        "\tint ac;",
-        "\tchar **av;",
-        "{",
-        "\tcopier( instructions);",
-        "\tinterp( instructions);",
-        "}",
-        0
+	"#include <stdio.h>",
+	"void copier( s)",
+	"\tchar *s[];",
+	"{",
+	"\tchar **p, *q;",
+	"\tfputs( \"char *instructions[] = {\\n\", stdout);",
+	"\tfor( p = s; *p; p++)",
+	"\t{",
+	"\t\tfputs( \"\\t\\\"\", stdout);",
+	"\t\tfor( q = *p; *q; q++)",
+	"\t\t{",
+	"\t\t\tswitch(*q)",
+	"\t\t\t{",
+	"\t\t\tcase '\\t':",
+	"\t\t\t\tfputs( \"\\\\t\", stdout);",
+	"\t\t\t\tbreak;",
+	"\t\t\tcase '\\\\':",
+	"\t\t\t\tfputs( \"\\\\\\\\\", stdout);",
+	"\t\t\t\tbreak;",
+	"\t\t\tcase '\"':",
+	"\t\t\t\tfputs( \"\\\\\\\"\", stdout);",
+	"\t\t\t\tbreak;",
+	"\t\t\tcase '\\n':",
+	"\t\t\t\tfputs( \"\\\\n\", stdout);",
+	"\t\t\t\tbreak;",
+	"\t\t\tdefault:",
+	"\t\t\t\tfputc( *q, stdout);",
+	"\t\t\t\tbreak;",
+	"\t\t\t}",
+	"\t\t}",
+	"\t\tfputs( \"\\\",\\n\", stdout);",
+	"\t}",
+	"\tfputs( \"\\t0\\n};\\n\", stdout);",
+	"}",
+	"void interp( s)",
+	"\tchar *s[];",
+	"{",
+	"\tchar **p = s;",
+	"\tfor( p = s; *p; p++)",
+	"\t{",
+	"\t\tfputs( *p, stdout);",
+	"\t\tfputc( '\\n', stdout);",
+	"\t}",
+	"}",
+	"int main( ac, av)",
+	"\tint ac;",
+	"\tchar **av;",
+	"{",
+	"\tcopier( instructions);",
+	"\tinterp( instructions);",
+	"}",
+	0
 };
 #include <stdio.h>
 void copier( s)
-        char *s[];
+	char *s[];
 {
-        char **p, *q;
-        fputs( "char *instructions[] = {\n", stdout);
-        for( p = s; *p; p++)
-        {
-                fputs( "\t\"", stdout);
-                for( q = *p; *q; q++)
-                {
-                        switch(*q)
-                        {
-                        case '\t':
-                                fputs( "\\t", stdout);
-                                break;
-                        case '\\':
-                                fputs( "\\\\", stdout);
-                                break;
-                        case '"':
-                                fputs( "\\\"", stdout);
-                                break;
-                        case '\n':
-                                fputs( "\\n", stdout);
-                                break;
-                        default:
-                                fputc( *q, stdout);
-                                break;
-                        }
-                }
-                fputs( "\",\n", stdout);
-        }
-        fputs( "\t0\n};\n", stdout);
+	char **p, *q;
+	fputs( "char *instructions[] = {\n", stdout);
+	for( p = s; *p; p++)
+	{
+		fputs( "\t\"", stdout);
+		for( q = *p; *q; q++)
+		{
+			switch(*q)
+			{
+			case '\t':
+				fputs( "\\t", stdout);
+				break;
+			case '\\':
+				fputs( "\\\\", stdout);
+				break;
+			case '"':
+				fputs( "\\\"", stdout);
+				break;
+			case '\n':
+				fputs( "\\n", stdout);
+				break;
+			default:
+				fputc( *q, stdout);
+				break;
+			}
+		}
+		fputs( "\",\n", stdout);
+	}
+	fputs( "\t0\n};\n", stdout);
 }
 void interp( s)
-        char *s[];
+	char *s[];
 {
-        char **p = s;
-        for( p = s; *p; p++)
-        {
-                fputs( *p, stdout);
-                fputc( '\n', stdout);
-        }
+	char **p = s;
+	for( p = s; *p; p++)
+	{
+		fputs( *p, stdout);
+		fputc( '\n', stdout);
+	}
 }
 int main( ac, av)
-        int ac;
-        char **av;
+	int ac;
+	char **av;
 {
-        copier( instructions);
-        interp( instructions);
+	copier( instructions);
+	interp( instructions);
 }
 
 
-//Author: Teemu Suikki
-Note: Self-reproducing .signature
+//Author: Teemu Suikki (self-54)
+//Note: Self-reproducing .signature, initially the a='\0,a='"' was a='",a='"'
 
-main() {char *p,a;printf(p="main() {char *p,a;printf(p=%c%s%c,a='",a='"',p,
+main() {char *p,a;printf(p="main() {char *p,a;printf(p=%c%s%c,a=' ,a='"',p,
 a);printf(p="%c',p,%ca);printf(p=%c%s%c%c,a,10,a,p,a,10,a,%c%s%c,a,10);}%c"
 ,a,10,a,p,a,10,a," *** Email: xxxxxxx@xxx.xx *** IRC: Zuikkis *** ",a,10);}
 
 
 //Author: Ashley Roll
-Note: another .sig
+//Note: another .sig
 
 #include  /* Ashley Roll aroll@gucis.cit.gu.edu.au */
 main(){char *s,*a,*t;for(t=s="7}|wzarq6*gbr}{<~,6;@6Ug~zqm6H{zz6uh{zzVsaw}g<\\\
@@ -1126,7 +1128,7 @@ else default:c(*p)??>??>??>main()??;",0);for(p=a
 ??>
 
 
-//Author: Dan Hoey
+//Author: Dan Hoey (self-56)
 //Notes: Modified slightly by Joe Miller. This is not only self-printing, it's a palindrome. 
 
 /**/char q='"',*a="*//**/char q='%c',*a=%c%s%c*/};)b(stup;]d[b=]d-852
@@ -1151,20 +1153,20 @@ utchar(b[d]=b[260-d]);}/*c%s%c%=a*,'c%'=q
 rahc/**//*"=a*,'"'=q
 rahc/**/
 
-//Author: Dan hoey
-Note: Last palindromes...
+//Author: Dan hoey (self-59, does not built)
+//Note: Last palindromes...
 
 /**/main(){char*a=/*/};)q,q,a,q,q,811+a(ftnirp;'"'=q,/**/"/**/main(){char*a=/*/};)q,q,a,q,q,811+a(ftnirp;'c%'=q,/**/c%s%c%/**/,q='c%';printf(a+118,q,q,a,q,q);}/*/=a*rahc{)(niam/**/main(){char*a=/*/};)q,q,a,q,q,811+a(ftnirp;'%c'=q,/**/%c%s%c/**/,q='%c';printf(a+118,q,q,a,q,q);}/*/=a*rahc{)(niam/**/"/**/,q='"';printf(a+118,q,q,a,q,q);}/*/=a*rahc{)(niam/**/
 
 
 //Author: Dan Hoey
-Note: Prints itself backwards
+//Note: Prints itself backwards
 
 main(){char*a="main(){char*a=c%s%c%,q='c%';printf(a+49,q,q,a,q);};)q,a,q,q,94+a(ftnirp;'%c'=q,%c%s%c=a*rahc{)(niam",q='"';printf(a+49,q,q,a,q);}
 
 
 //Author: Dan Hoey
-Note: Yet another backwards printer
+//Note: Yet another backwards printer
 
 main(){char*a="main(){char*a=c%s%c%;printf(a+42,34,a,34);};)43,a,43,24+a(ftnirp;%c%s%c=a*rahc{)(niam";printf(a+42,34,a,34);}
 
@@ -1173,6 +1175,6 @@ main(){char*a="main(){char*a=c%s%c%;printf(a+42,34,a,34);};)43,a,43,24+a(ftnirp;
 //Author: smr
 //Notes: This program won the "Worst Abuse of the Rules" award in the 1994 Obfuscated C Code contest. It claims to be the world's shortest self-producing C program. Hey, it's also a palindrome! Some compilers give fatal errors on this one. 
 
-Pretty short, eh? 
+// Pretty short, eh? 
 
 
