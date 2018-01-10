@@ -1,0 +1,16 @@
+
+t(setq /*;*/){}main(){char q='\"',s='\\';char*a= 
+"~%t(setq /*;*/){}main(){char q='~A';char*a= 
+~S;char*b=/* 
+)(setq a ~S) 
+(setq */ ~S;printf(b,s,q,s,s,q,a,q,q,s,s,s,q,s,s,s,s,q,q,b,q/* 
+)(format t /* a /* a */);}~%";char*b=/* 
+)(setq a "\\\"',s='\\\\") 
+(setq */ " 
+t(setq /*;*/){}main(){char q='%c%c',s='%c%c';char*a= 
+%c%s%c;char*b=/* 
+)(setq a %c%c%c%c%c',s='%c%c%c%c%c) 
+(setq */ %c%s%c;printf(b,s,q,s,s,q,a,q,q,s,s,s,q,s,s,s,s,q,q,b,q/* 
+)(format t /* a /* a */);} 
+";printf(b,s,q,s,s,q,a,q,q,s,s,s,q,s,s,s,s,q,q,b,q/* 
+)(format t /* a /* a */);} 

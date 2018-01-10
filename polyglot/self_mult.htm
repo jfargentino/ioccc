@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html><head>
+   <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+   <meta name="Generator" content="Microsoft Word 97">
+   <meta name="GENERATOR" content="Mozilla/4.61 [en] (Win98; I) [Netscape]">
+</head>
+<body>
+<font face="Courier New"><font size="-1">Multiple Languages:</font></font>
+<p><font face="Courier New"><font size="-1">The following programs are quines
+in different languages. If you run them in more than one language, it produces
+itself as output.</font></font>
+</p><p><font face="Courier New"><font size="-1">Author: Joe Miller</font></font>
+<br><font face="Courier New"><font size="-1">Languages: C and tcl</font></font>
+</p><p><font face="Courier New"><font size="-1">#define set char*f=</font></font>
+<br><font face="Courier New"><font size="-1">#define F</font></font>
+<br><font face="Courier New"><font size="-1">#define proc main(){</font></font>
+<br><font face="Courier New"><font size="-1">set F "#define set char*f=</font></font>
+<br><font face="Courier New"><font size="-1">#define F</font></font>
+<br><font face="Courier New"><font size="-1">#define proc main(){</font></font>
+<br><font face="Courier New"><font size="-1">set F %c%s%c;</font></font>
+<br><font face="Courier New"><font size="-1">proc /* {} {}</font></font>
+<br><font face="Courier New"><font size="-1">puts -nonewline %cformat %cF
+34 %cF 34 91 36 36]</font></font>
+<br><font face="Courier New"><font size="-1">set a {*/printf(f,34,f,34,91,36,36);}</font></font>
+<br><font face="Courier New"><font size="-1">";</font></font>
+<br><font face="Courier New"><font size="-1">proc /* {} {}</font></font>
+<br><font face="Courier New"><font size="-1">puts -nonewline [format $F 34
+$F 34 91 36 36]</font></font>
+<br><font face="Courier New"><font size="-1">set a {*/printf(f,34,f,34,91,36,36);}</font></font>
+<br>&nbsp;
+<br>&nbsp;
+</p><p><font face="Courier New"><font size="-1">Author: Joe Miller</font></font>
+<br><font face="Courier New"><font size="-1">Languages: C and Lisp</font></font>
+</p><p><font face="Courier New"><font size="-1">Notes: (from the author) The
+Lisp sucks. It consists almost entirely of destructive variable assignments
+and sequences of statements. Oh well. For reasons I do not want to discuss,
+the first line is blank.</font></font>
+<br>&nbsp;
+<br>&nbsp;
+</p><p><font face="Courier New"><font size="-1">t(setq /*;*/){}main(){char q='\"',s='\\';char*a=</font></font>
+<br><font face="Courier New"><font size="-1">"~%t(setq /*;*/){}main(){char
+q='~A';char*a=</font></font>
+<br><font face="Courier New"><font size="-1">~S;char*b=/*</font></font>
+<br><font face="Courier New"><font size="-1">)(setq a ~S)</font></font>
+<br><font face="Courier New"><font size="-1">(setq */ ~S;printf(b,s,q,s,s,q,a,q,q,s,s,s,q,s,s,s,s,q,q,b,q/*</font></font>
+<br><font face="Courier New"><font size="-1">)(format t /* a /* a */);}~%";char*b=/*</font></font>
+<br><font face="Courier New"><font size="-1">)(setq a "\\\"',s='\\\\")</font></font>
+<br><font face="Courier New"><font size="-1">(setq */ "</font></font>
+<br><font face="Courier New"><font size="-1">t(setq /*;*/){}main(){char q='%c%c',s='%c%c';char*a=</font></font>
+<br><font face="Courier New"><font size="-1">%c%s%c;char*b=/*</font></font>
+<br><font face="Courier New"><font size="-1">)(setq a %c%c%c%c%c',s='%c%c%c%c%c)</font></font>
+<br><font face="Courier New"><font size="-1">(setq */ %c%s%c;printf(b,s,q,s,s,q,a,q,q,s,s,s,q,s,s,s,s,q,q,b,q/*</font></font>
+<br><font face="Courier New"><font size="-1">)(format t /* a /* a */);}</font></font>
+<br><font face="Courier New"><font size="-1">";printf(b,s,q,s,s,q,a,q,q,s,s,s,q,s,s,s,s,q,q,b,q/*</font></font>
+<br><font face="Courier New"><font size="-1">)(format t /* a /* a */);}</font></font>
+<br>&nbsp;
+<br>&nbsp;
+</p><p><font face="Courier New"><font size="-1">Author: Ishai Ben-Aroya &lt;ishai@techunix.technion.ac.il&gt;</font></font>
+</p><p><font face="Courier New"><font size="-1">Languages: ANSI C and Turbo Pascal.</font></font>
+</p><p><font face="Courier New"><font size="-1">Notes: Pascal code has not been
+verified</font></font>
+<br>&nbsp;
+<br>&nbsp;
+</p><p><font face="Courier New"><font size="-1">(*a);main(){char i,*s[]={"%c%s%c%c%c",</font></font>
+<br><font face="Courier New"><font size="-1">"(*a);main(){char i,*s[]={",</font></font>
+<br><font face="Courier New"><font size="-1">"%c%c%c%s%c%s%c%s%c%s%c/*%c%s",</font></font>
+<br><font face="Courier New"><font size="-1">";printf(s[1]);for(i=0;i&lt;=12;i++)printf(s[0],34,s[i],34,44,10);",</font></font>
+<br><font face="Courier New"><font size="-1">"printf(s[2],34,34,125,s[3],10,s[4],10,s[5],10,s[6],10,41,s[7]);",</font></font>
+<br><font face="Courier New"><font size="-1">"for(i=0;i&lt;=12;i++)printf(s[0],39,s[i],39,44,10);",</font></font>
+<br><font face="Courier New"><font size="-1">"printf(s[12],39,39,41,s[8],10,s[9],10,s[10],10,s[11],10,47,125);",</font></font>
+<br><font face="Courier New"><font size="-1">"const q=#34;w=#39;n=#13#10;s:array[0..13]
+of string=(",</font></font>
+<br><font face="Courier New"><font size="-1">";var i:integer;begin write(s[1]);for
+i:=0to 12do write(q,s[i],q,#44,n);",</font></font>
+<br><font face="Courier New"><font size="-1">"write(#34#34#125,s[3],n,s[4],n,s[5],n,s[6],n,#47#42#41,s[7]);",</font></font>
+<br><font face="Courier New"><font size="-1">"for i:=0to 12do write(w,s[i],w,#44,n);
+",</font></font>
+<br><font face="Courier New"><font size="-1">"write(#39#39#41,s[8],n,s[9],n,s[10],n,s[11],n,#123#42#47#125);end.",</font></font>
+<br><font face="Courier New"><font size="-1">"%c%c%c%s%c%s%c%s%c%s%c{*%c%c",</font></font>
+<br><font face="Courier New"><font size="-1">""};printf(s[1]);for(i=0;i&lt;=12;i++)printf(s[0],34,s[i],34,44,10);</font></font>
+<br><font face="Courier New"><font size="-1">printf(s[2],34,34,125,s[3],10,s[4],10,s[5],10,s[6],10,41,s[7]);</font></font>
+<br><font face="Courier New"><font size="-1">for(i=0;i&lt;=12;i++)printf(s[0],39,s[i],39,44,10);</font></font>
+<br><font face="Courier New"><font size="-1">printf(s[12],39,39,41,s[8],10,s[9],10,s[10],10,s[11],10,47,125);</font></font>
+<br><font face="Courier New"><font size="-1">/*)const q=#34;w=#39;n=#13#10;s:array[0..13]
+of string=('%c%s%c%c%c',</font></font>
+<br><font face="Courier New"><font size="-1">'(*a);main(){char i,*s[]={',</font></font>
+<br><font face="Courier New"><font size="-1">'%c%c%c%s%c%s%c%s%c%s%c/*%c%s',</font></font>
+<br><font face="Courier New"><font size="-1">';printf(s[1]);for(i=0;i&lt;=12;i++)printf(s[0],34,s[i],34,44,10);',</font></font>
+<br><font face="Courier New"><font size="-1">'printf(s[2],34,34,125,s[3],10,s[4],10,s[5],10,s[6],10,41,s[7]);',</font></font>
+<br><font face="Courier New"><font size="-1">'for(i=0;i&lt;=12;i++)printf(s[0],39,s[i],39,44,10);',</font></font>
+<br><font face="Courier New"><font size="-1">'printf(s[12],39,39,41,s[8],10,s[9],10,s[10],10,s[11],10,47,125);',</font></font>
+<br><font face="Courier New"><font size="-1">'const q=#34;w=#39;n=#13#10;s:array[0..13]
+of string=(',</font></font>
+<br><font face="Courier New"><font size="-1">';var i:integer;begin write(s[1]);for
+i:=0to 12do write(q,s[i],q,#44,n);',</font></font>
+<br><font face="Courier New"><font size="-1">'write(#34#34#125,s[3],n,s[4],n,s[5],n,s[6],n,#47#42#41,s[7]);',</font></font>
+<br><font face="Courier New"><font size="-1">'for i:=0to 12do write(w,s[i],w,#44,n);
+',</font></font>
+<br><font face="Courier New"><font size="-1">'write(#39#39#41,s[8],n,s[9],n,s[10],n,s[11],n,#123#42#47#125);end.',</font></font>
+<br><font face="Courier New"><font size="-1">'%c%c%c%s%c%s%c%s%c%s%c{*%c%c',</font></font>
+<br><font face="Courier New"><font size="-1">'');var i:integer;begin write(s[1]);for
+i:=0to 12do write(q,s[i],q,#44,n);</font></font>
+<br><font face="Courier New"><font size="-1">write(#34#34#125,s[3],n,s[4],n,s[5],n,s[6],n,#47#42#41,s[7]);</font></font>
+<br><font face="Courier New"><font size="-1">for i:=0to 12do write(w,s[i],w,#44,n);</font></font>
+<br><font face="Courier New"><font size="-1">write(#39#39#41,s[8],n,s[9],n,s[10],n,s[11],n,#123#42#47#125);end.</font></font>
+<br><font face="Courier New"><font size="-1">{*/}</font></font>
+</p><p><tt>Author: Bertram Felgenhauer</tt>
+<br><tt>Languages: dc and C</tt>
+<br><tt>Notes: uses // comment style</tt><tt></tt>
+</p><p><tt>z1d//[[z1d//]P91PP93P[dx]Pq</tt>
+<br><tt>;main(){char*a="z1d//[[z1d//]P91PP93P[dx]Pq%c;main(){char*a=%c%s%c;printf(a,10,34,a,34);}//]dx";printf(a,10,34,a,34);}//]dx</tt>
+<br>&nbsp;
+</p><p><tt>Author: Bertram Felgenhauer</tt>
+<br><tt>Languages: C, dc, and BrainF***</tt>
+<br><tt>Notes: You'll have to bootstrap this yourself, but here it is</tt><tt></tt>
+</p><p><tt><a href="http://www.nyx.net/~gthompso/poly/bertram2.txt">bertram2.txt</a></tt>
+<br>&nbsp;
+</p><p><font face="Courier New"><font size="-1">Author: njharve@waterloo.ca</font></font>
+</p><p><font face="Courier New"><font size="-1">Languages: C and vi (VIM 4.0)</font></font>
+</p><p><font face="Courier New"><font size="-1">Note: This file contains control
+characters, so it is kept seperate. Also, you need to set the following:</font></font>
+</p><p><font face="Courier New"><font size="-1">set noai</font></font>
+<br><font face="Courier New"><font size="-1">set wm=0</font></font>
+<br><font face="Courier New"><font size="-1">set nosi</font></font>
+<br><font face="Courier New"><font size="-1">set tw=0</font></font>
+<br><font face="Courier New"><font size="-1">set nogdefault</font></font>
+</p><p><font face="Courier New"><font size="-1"><a href="http://www.nyx.net/~gthompso/self_c_vi.txt">self_c_vi.txt</a></font></font>
+
+
+</p></body></html>

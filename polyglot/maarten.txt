@@ -1,0 +1,35 @@
+                                                                        (* /*
+C > /) 2> /dev/null & echo hello world!; exit
+C << 'CC'
+C
+C       This file is a portable:
+C       - (ANSI/KR) C source, about which lint(1) does not complain/warn;
+C       - (ISO) Pascal source;
+C       - (ANSI) Fortran-77 source;
+C       - (POSIX/V7/BSD/System V) shell script.
+C
+C*/ foo()) { extern *bar; return ++bar; /*
+C*) program {*/} int (* /*
+C*) (output); begin writeln('hello world!') end. {
+      print *, 'hello world!'
+      end
+C*/ bar); main() { puts("hello world!"); return !foo(); /*
+CC
+C*/}                                                                        (* /*
+C > /) 2> /dev/null & echo hello world!; exit
+C << 'CC'
+C
+C	This file is a portable:
+C	- (ANSI/KR) C source, about which lint(1) does not complain/warn;
+C	- (ISO) Pascal source;
+C	- (ANSI) Fortran-77 source;
+C	- (POSIX/V7/BSD/System V) shell script.
+C
+C*/ foo()) { extern *bar; return ++bar; /*
+C*) program {*/} int (* /*
+C*) (output); begin writeln('hello world!') end. {
+      print *, 'hello world!'
+      end
+C*/ bar); main() { puts("hello world!"); return !foo(); /*
+CC
+C*/}

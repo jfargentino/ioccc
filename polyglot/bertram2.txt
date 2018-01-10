@@ -1,0 +1,63 @@
+Language: dc, BrainF***, C
+Author:   Bertram Felgenhauer
+Notes:    uses // comment style
+          this is a bootstrap
+
+input file:
+
+===START===
+[+<]+<[.+<]<+++++++[>+++++++++<-]>-..>[-<.<+++++[>----<-]>+>[<<+>.>-]<[>+<-]>+++++++++++++++++++>]<<<[.<][";printf(_,10,34,_,34,34,A,34);}//]]dx^Az1dd//+[[z1dd//+]P91PP93P[dx]Pq[
+;main(){char*_="z1dd//+[[z1dd//+]P91PP93P[dx]Pq[%c;main(){char*_=%c%s%c,*A=%c%s%c;printf(_,10,34,_,34,34,A,34);}//]]dx",*A="]
+====END====
+
+(two lines, note that there is no end of line in the second line, and that
+you'll have to replace ^A by the ASCII character no. 1, i.e. Ctrl-A)
+
+
+bootstrap.b
+===START===
+++++[>++++<-]>[>++++<-]>[>++++<-]>[>++++<-]>[-[>+<-]>]
+--[++<,-]+[<,+]>[->]<(simulate data area)
+
+[+<]+<[.+<]<+++++++[>+++++++++<-]>-..>
+[-<.<+++++[>----<-]>+>[<<+>.>-]<[>+<-]>+++++++++++++++++++>]<<<
+[.<]
+====END====
+
+Description:
+
+The dc version works like in the dc/c polyglot quine, except that the string 
+is much longer...
+
+The c version is almost the classical one, but defines an additional variable
+string which will hold the brainf*** program.
+
+===START===
+z1dd//+[[z1dd//+]P91PP93P[dx]Pq[
+;main(){char*a="z1dd//+[[z1dd//+]P91PP93P[dx]Pq[%c;main(){char*a=%c%s%c,*b=%c%s%c;printf(a,10,34,a,34,34,b,34);}//]]dx",*b="*variable string*";printf(a,10,34,a,34,34,b,34);}//]]dx
+====END====
+
+In addition, I had to insert a "+" sign before the first "[", to make the
+Brainf*** program in the string executable. the [z1dd//+] which prints
+the start of the program in the dc version is a loop which eventually counts
+to zero in Brainf***. The only problem in the Brainf*** program is that
+the data (in ">+++++++++++++" form) must be put in the middle of the output.
+That's what the ^A in the input file above is for - it serves as a end of
+string marker. The data will look like the following (starting from
+the begin of the data area)
+0 0 0 ']' '"' '=' ... '1' 'z'  0  'x' 'd' ']' ... '+' *'['
+now the code will go left until it reaches the 0, advancing all skipped
+elements by one
+0 0 0 ']' '"' '=' ... '1' 'z'  *0  'x'+1 'd'+1 ']'+1 ... '+'+1 '['+1
+now it skips the 0, advancing it by one and skips back further, printing
+the skipped characters and advancing by one. prints:
+z1dd...,*A="]
+then it prints two ">>", and for each data word prints a ">" and an appropriate
+number of "+", moving all data one place to the left and decrementing by
+one.
+0 0 ']' '"' '=' ... '1' 'z' 0 'x' 'd' ... '+' *'['
+finally, it skips backwards until it reaches a 0, printing the skipped
+characters. prints:
+[+<]+<[.+<] ... ;}//]]dx
+===========================================================================
+

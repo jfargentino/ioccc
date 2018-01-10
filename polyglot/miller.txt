@@ -1,0 +1,14 @@
+#define set char*f= 
+#define F 
+#define proc main(){ 
+set F "#define set char*f= 
+#define F 
+#define proc main(){ 
+set F %c%s%c; 
+proc /* {} {} 
+puts -nonewline %cformat %cF 34 %cF 34 91 36 36] 
+set a {*/printf(f,34,f,34,91,36,36);} 
+"; 
+proc /* {} {} 
+puts -nonewline [format $F 34 $F 34 91 36 36] 
+set a {*/printf(f,34,f,34,91,36,36);} 

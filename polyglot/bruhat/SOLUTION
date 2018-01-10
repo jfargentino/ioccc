@@ -1,0 +1,144 @@
+Re-README
+---------
+This incantation is submitted by apprentice Philippe 'BooK' Bruhat. It
+counts rows, signifiers and sigils in the file given as an offering to
+the monstruosity it is. This wretched creature was spelled for the 4th
+Circle of Judgement. However, when properly feeded, it could be judged
+in the 1st Circle of Judgement... Alas it's too long a spell for this.
+
+HOW TO SPELL THIS
+-----------------
+This incantation is a Chamel-eon, and should be spelled in the name of 
+one of the two following totems: the Camel (in its fifth incarnation),
+or the Gnu (two distinct incarnations managed to spell it, though they
+growled a bit), in one of the following manner: perl wc.c <victim>, or
+gcc wc.c -o wc ; ./wc <victim>. In return, the spirits will reveal the
+spellcaster how many lines, words and bytes the victim used to have...
+If no victim is given, the default victim is the standard input. Would
+many victims be given to it, our monster would chop them in tiny bits,
+then count these bits as expected. When invoqued in the secret way, it
+will behave as if judged for the First Circle, and spit the words "The
+Perl Journal". However if invoqued under the totem of the Gnu, it will
+moan "Hello, world!". The secret way is to choose a victim named "-p".
+
+HOW IT WORKS (BUT DOES IT?)
+---------------------------
+AIX 4.2.1 (gcc 2.8.1) and Linux 2.0.36 (gcc 2.7.2.3) ran the programs,
+in every way I could think of: no arguments (input on stdin), -p as an
+argument, two files, more files, as many files as * gave, non-existent
+files, and so on... The original wc was way faster than the two others
+and the C version of this incantion proved twice as fast as the camel-
+enhanced one (sorry guys).
+The main trick is to use m///, q and qq with characters such as '=' or
+',' to trick the C compiler into doing useless things while the Camel,
+clever as it is, does other useless things. Perl works are done mostly
+in C/C++ comments (after // or in /**/ hidden as quotes or m///) a few
+C things are done in useless matches or quotes, and even in # comments
+sometimes. Also useful was the use of this Table of Truth (whitout any
+parens) for x?y?z?a:b:c:d (this is the same as x?(y?(z?a:b):c):d), and
+the knowledge that T?T?T?a:b:c:d gives a, T?T?F?a:b:c:d gives b, while
+T?F?_?a:b:c:d gives c and F?_?_?a:b:c:d returns d. (T is for True, and
+F means False. _ indicates that trueness is irrelevant there.)... More
+useless bits were stuffed in these parts of the Code. A few raw glyphs
+were added to the source code, but this shouldn't cause any problem to
+the judges.
+I tried not to overuse // C++ comments (though I discovered //;# could
+be useful while coding and testing)...  I used an array of integers to
+avoid #define as much as I could. Still, I think four is way too much.
+
+SAY THAT AGAIN?
+---------------
+Most of the counting information is held in @i alias int i[]... Here's
+what it holds:
+ 0: current char to test, and some other junk
+ 1: 2 if in word, 0 otherwise
+ 2: number of words in the current file
+ 3: number of lines in the current file
+ 4: number of chars in the current file
+ 5: 0, so that the "add to the total" for loop can end
+ 6: total number of words
+ 7: total number of lines
+ 8: total number of chars
+ 9: 0, same as i[5]
+10: number of files left to parse
+11: number of command-line parameters (C's argc)
+12: 4 tokens disguised as an int (537463307 is SPACE, TAB, LF, VT)
+13: 2 tokens (and two '\0') disguised as an int (3085 is NUL, NUL, FF, CR)
+13: 2 tokens (and two '\0') disguised as an int (202178560 is FF, CR, NUL, NUL)
+Note: i[13] can have two different values, depending on your hardware...
+(specifically big or little endian... the included wc.c file is meant
+for x86 CPUs)
+
+LET'S TRY IT LINE BY LINE
+-------------------------
+The first four lines are #include ignored by Perl (and useless to it).
+The following #defines are ignored by Perl too, but a C comment starts
+at the end of the last one, allowing Perl to start doing something: in
+this case, we put an empty string in @ARGV, so that it's the same size
+as argv. We also hide away the C declaration of main() in a string. //
+lets us fall back on our feets and start the real initialisation. Line
+11, some C variables are declared, while a useless match is performed,
+and fed to int(), all in a void context. Line 12 and 13 the same trick
+is used, with a single quote this time. By the end of the line we make
+sure $_ will hold the first command-line parameter, if it's not longer
+than two characters (to test for equality with -p). Then we check that
+equality, with a little bit of ???:::... Here is a commented version:
+  if(m+-p?(argc>1&&!strcmp(argv[1],"-p"))?p+i? 1 : 1 x 0 x 0) {
+Perl:  ^-string to match -p, thanks to ? -^
+  if $_ is 2 char long, it can only match on "-p"
+  the alternative for ?: is 1 or 1 x 0 x 0, that is to say 1 and ""
+C:  m+-p equals 2, so it's always true
+    argc>1&&!strcmp(argv[1],"-p") is true if the first param is -p
+    we don't care about the value of p+i (but it's probably true)
+    x being replaced by : by the preprocessor, we check for
+    T?something?T?1:1:0:0 which depending on 'something' equals the
+    third value if 'something' is false, and either the 1st or 2nd
+    values if 'something' is true.
+To sum up, if the first parameter is -p, we print either "Hello, world!"
+or "The Perl Journal", and then exit.
+
+While definig qq as the original C string, we hide the 6 chars delimiting
+words into i[12] and i[13]... By the way, if the C version of the program
+doesn't work for words for you, you might have to change i[13] from 3085
+to 202178560... It depends on your endian's size.
+ne 18, we store the total number of command line arguments (C meaning),
+and the same number minus one, which is the total number of files to check.
+Lines 19-33, the while loop checks each file. If there is no file, line 20
+takes care of it, and prepare STDIN to be opened (F is made equal to 0,
+or *STDIN, depending on your view). NB: no file means argc==1 i.e. i[11]<2.
+Line 21 we open the current file (thanks to the open C macro). It's file
+descriptor is none other than 3. At least, it beghaved so on the various
+machines I tried.
+Line 23, our while loop reads the file byte by byte (maybe I could improve
+performance here, by using a bigger buffer...)
+Line 24, one more byte. Plus $_ is made equal to the currenta char, as well
+as the C pointer pp.
+Then, line 25, we check for newline within the Perl match (in C, we use a
+null xor for equality, while in Perl we use the match, which does what we
+want, because the string is only one byte long, anyway...).
+At the end of this line, the C for loop tests our current char against
+the values stored in i[12] and i[13] (that's where the endian comes into
+play!). If so, we raise the q flag.
+Line 26, we check our byte in Perl, with a regex. In C, we check the flag.
+So, line 27, we are in a word. We increment i[2] (that's the value of i[1])
+and unraise the "in word" flagg (i[1]). Else, we raise the "in word" flag.
+
+When the file is entierely read, line 29, we check and count the last word,
+if any. Line 30, we print the results (if our file was stdin, we made sure
+its name was "" line 17...).
+Then we close the file.
+Line 32, the counts are added to the grand total. Thanks to i[5]and i[9],
+our for loop ends when we want.
+
+Line 34, if we had more than one file, we print the grand total.
+
+ANY DIFFERENCES?
+----------------
+OK, there are some differences in behavior between these progs and the
+original GNU wc... Mainly error handling when one of the files doesn't
+exists.
+
+POST-SCRIPTUM
+-------------
+Sorry if in the end of that SOLUTION is quite quick, but the plane that
+takes me on holidays leaves in less than two hours... Read you in TPJ 15.

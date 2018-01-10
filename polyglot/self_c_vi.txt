@@ -1,0 +1,8 @@
+map () {}/*
+map g ;data0df"f"cf"f"cf"f"D2kyyP;g6k2dd4x5jA"JxA","JxA","jyyPkJxA"jok;g2kdd4xkJx3jdd
+map ;g O"vdldd0i# 0# 1# 2# 3# 4# 5# #0lx2lx2lx2lx2lx2lx2lx:s/##/#/go:s//"/gk0y2lj02lp"addk@ao:s//\\/gk0ly2lj02lp"addk@ao:s///gk04ly2lj02lp05l"vp"addk@ao:s///gk05ly2lj02lp05l"vp"vp"addk@ao:s///gk06ly2lj02lp05l"vp"vp"vp"addk@ao:s///gk02ly2lj02lp05l"vp"addk@a
+unmap ()
+
+map ;data o*/ char*g[]={"map () {}/*#2map g ;data0df#0f#0cf#0#5#3f#0cf#0#5#3f#0D2kyyP;g6k2dd4x5jA#0#3JxA#0,#0#3JxA#0,#0#3jyyPkJxA#0#3jo#3k;g2kdd4xkJx3jdd#2map ;g O#4#4#4#4#3#0vdldd0i## 0## 1## 2## 3## 4## 5## ###30lx2lx2lx2lx2lx2lx2lx:s/####/##/g#5o:s//#0/g#3k0y2lj02lp#0addk@ao:s//#1#1/g#3k0ly2lj02lp#0addk@ao:s//#4#4#3/g#3k04ly2lj02lp05l#0vp#0addk@ao:s///g#3k05ly2lj02lp05l#0vp#0vp#0addk@ao:s//#4#4#5/g#3k06ly2lj02lp05l#0vp#0vp#0vp#0addk@ao:s//#4#4#5/g#3k02ly2lj02lp05l#0vp#0addk@a#2unmap ()#2#2map ;data o*/ char*g[]={","#A#0#a#0,#0#b#0,#0#c#0#C#2","}; /*#3#2#2#0*/  print(char*s){char*t=s,c,d;while(c=*t++)if(c==35){c=*t++;if(c==35)putchar(c);else if(c==48)putchar(34);else if(c==49)putchar(92);else if(c==50)printf(#0#1n#0);else if(c==51)putchar(27);else if(c==52)putchar(22);else if(c==53)putchar(13);else if(c>64&&c<91)print(g[c-65]);else printf(g[c-97]);}else putchar(c);}  main(){print(g[1]);}"}; /*
+
+"*/  print(char*s){char*t=s,c,d;while(c=*t++)if(c==35){c=*t++;if(c==35)putchar(c);else if(c==48)putchar(34);else if(c==49)putchar(92);else if(c==50)printf("\n");else if(c==51)putchar(27);else if(c==52)putchar(22);else if(c==53)putchar(13);else if(c>64&&c<91)print(g[c-65]);else printf(g[c-97]);}else putchar(c);}  main(){print(g[1]);}

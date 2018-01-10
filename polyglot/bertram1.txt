@@ -1,0 +1,2 @@
+z1d//[[z1d//]P91PP93P[dx]Pq
+;main(){char*a="z1d//[[z1d//]P91PP93P[dx]Pq%c;main(){char*a=%c%s%c;printf(a,10,34,a,34);}//]dx";printf(a,10,34,a,34);}//]dx

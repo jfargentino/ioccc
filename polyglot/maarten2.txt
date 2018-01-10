@@ -1,0 +1,9 @@
+                                                                        (* /*
+C > /) 2> /dev/null & echo hello world!; exit
+*       This file is correct input for:
+*       sh, cc, pc, f77
+*/ main(program)) { puts("hello world!"); /*
+*) program main(output);begin writeln('hello world!')end. {
+      write( *, '("hello world!")')
+      end
+*/ return &program; }

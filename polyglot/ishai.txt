@@ -1,0 +1,35 @@
+(*a);main(){char i,*s[]={"%c%s%c%c%c",
+"(*a);main(){char i,*s[]={",
+"%c%c%c%s%c%s%c%s%c%s%c/*%c%s",
+";printf(s[1]);for(i=0;i<=12;i++)printf(s[0],34,s[i],34,44,10);",
+"printf(s[2],34,34,125,s[3],10,s[4],10,s[5],10,s[6],10,41,s[7]);",
+"for(i=0;i<=12;i++)printf(s[0],39,s[i],39,44,10);",
+"printf(s[12],39,39,41,s[8],10,s[9],10,s[10],10,s[11],10,47,125);",
+"const q=#34;w=#39;n=#13#10;s:array[0..13] of string=(",
+";var i:integer;begin write(s[1]);for i:=0to 12do write(q,s[i],q,#44,n);",
+"write(#34#34#125,s[3],n,s[4],n,s[5],n,s[6],n,#47#42#41,s[7]);",
+"for i:=0to 12do write(w,s[i],w,#44,n); ",
+"write(#39#39#41,s[8],n,s[9],n,s[10],n,s[11],n,#123#42#47#125);end.",
+"%c%c%c%s%c%s%c%s%c%s%c{*%c%c",
+""};printf(s[1]);for(i=0;i<=12;i++)printf(s[0],34,s[i],34,44,10);
+printf(s[2],34,34,125,s[3],10,s[4],10,s[5],10,s[6],10,41,s[7]);
+for(i=0;i<=12;i++)printf(s[0],39,s[i],39,44,10);
+printf(s[12],39,39,41,s[8],10,s[9],10,s[10],10,s[11],10,47,125);
+/*)const q=#34;w=#39;n=#13#10;s:array[0..13] of string=('%c%s%c%c%c',
+'(*a);main(){char i,*s[]={',
+'%c%c%c%s%c%s%c%s%c%s%c/*%c%s',
+';printf(s[1]);for(i=0;i<=12;i++)printf(s[0],34,s[i],34,44,10);',
+'printf(s[2],34,34,125,s[3],10,s[4],10,s[5],10,s[6],10,41,s[7]);',
+'for(i=0;i<=12;i++)printf(s[0],39,s[i],39,44,10);',
+'printf(s[12],39,39,41,s[8],10,s[9],10,s[10],10,s[11],10,47,125);',
+'const q=#34;w=#39;n=#13#10;s:array[0..13] of string=(',
+';var i:integer;begin write(s[1]);for i:=0to 12do write(q,s[i],q,#44,n);',
+'write(#34#34#125,s[3],n,s[4],n,s[5],n,s[6],n,#47#42#41,s[7]);',
+'for i:=0to 12do write(w,s[i],w,#44,n); ',
+'write(#39#39#41,s[8],n,s[9],n,s[10],n,s[11],n,#123#42#47#125);end.',
+'%c%c%c%s%c%s%c%s%c%s%c{*%c%c',
+'');var i:integer;begin write(s[1]);for i:=0to 12do write(q,s[i],q,#44,n);
+write(#34#34#125,s[3],n,s[4],n,s[5],n,s[6],n,#47#42#41,s[7]);
+for i:=0to 12do write(w,s[i],w,#44,n); 
+write(#39#39#41,s[8],n,s[9],n,s[10],n,s[11],n,#123#42#47#125);end.
+{*/}

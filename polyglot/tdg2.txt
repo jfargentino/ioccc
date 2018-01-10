@@ -1,0 +1,22 @@
+
+/*     IDENTIFICATION DIVISION.
+          AUTHOR.  Tom Dawes-Gamble (c) 1991
+          REMARKS.
+                Is this C or COBOL ?????
+*/
+#               define DISPLAY printf(
+#               define PROCEDURE main(
+#               define DIVISION ){
+#               define STOP printf("\n"); exit(0);
+#               define RUN }
+
+        PROCEDURE DIVISION
+/*                      .
+*/
+            DISPLAY "Hello World"
+     /**/  );
+/*              .
+*/
+            STOP RUN
+/*              .
+*/
