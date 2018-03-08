@@ -10,11 +10,14 @@
 
 
 SHELL= /bin/sh
-WINNERS= anonymous
+WINNERS= anonymous unanonymous
 
 all: ${WINNERS}
 
 anonymous: anonymous.c
+	cc $? -o $@
+
+unanonymous: unanonymous.c
 	cc $? -o $@
 
 clean:
