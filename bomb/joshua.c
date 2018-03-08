@@ -1,3 +1,5 @@
+#include <stdint.h>
+
 struct indblock{
    uint32_t blocks[4096];
 };
