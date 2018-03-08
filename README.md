@@ -14,6 +14,8 @@ http://www.nyx.net/~gthompso/quine.htm
 # bomb
 found there:
 https://codegolf.stackexchange.com/questions/69189/build-a-compiler-bomb/69193#69193
+see also:
+https://codeexplainer.wordpress.com/2018/01/20/how-dismantle-compiler-bomb/
 
 # jfa
 my stuff
