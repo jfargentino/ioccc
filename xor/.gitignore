@@ -1,2 +1,5 @@
 *.o
 uuid4
+.SEED
+.UUID
+.UUID_REF
