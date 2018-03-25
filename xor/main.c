@@ -1,4 +1,5 @@
 #include "uuid4.h"
+#include "xorjump.h"
 #include "xorshift.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,7 +25,7 @@ int main (int argc, char ** argv) {
     bool verbose = false;
     bool xoro    = false;
     uint64_t seed[2] = { 0 };
-    uint64_t root = uuid4_init_seed (seed);
+    uuid4_init_seed (seed);
     int jump = 0;
     int loop = 1;
 
@@ -61,7 +62,6 @@ int main (int argc, char ** argv) {
             // TODO check endptr != argv[k+x]
             seed[0] = strtoul (argv[k+1], NULL, 0);
             seed[1] = strtoul (argv[k+2], NULL, 0);
-            root = seed[0] + seed[1];
             k += 2;
             break;
             
@@ -96,7 +96,7 @@ int main (int argc, char ** argv) {
 
     int j = jump;
     while (j) {
-        root = xorshift128_jump (seed, xoro);
+        xorshift128_jump (seed, xoro);
         _VERBOSE_print_seed (verbose, seed);
         j --;
     }
@@ -113,8 +113,8 @@ int main (int argc, char ** argv) {
     int l = loop;
     while (l) {
         char uuid[UUID4_LEN];
-        root = xoro ? uuid4_generate_xoro (seed, uuid)
-                    : uuid4_generate (seed, uuid);
+        xoro ? uuid4_generate_xoro (seed, uuid)
+             : uuid4_generate (seed, uuid);
         if (bench) {
             fwrite (seed, sizeof(uint64_t), 2, stdout);
         } else {

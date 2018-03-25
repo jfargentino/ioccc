@@ -7,39 +7,6 @@
 
 #include "xorshift.h"
 #include "uuid4.h"
-#include <stdio.h>
-
-/****************************************************************************/
-
-enum {
-    UUID4_ESUCCESS =  0,
-    UUID4_EFAILURE = -1
-};
-
-static int _init_seed_once(uint64_t seed[2]) {
-  int res;
-  FILE *fp = fopen("/dev/urandom", "rb");
-  if (!fp) {
-    return UUID4_EFAILURE;
-  }
-  res = fread(seed, 1, 2 * sizeof(uint64_t), fp);
-  fclose(fp);
-  if ( res !=  2 * sizeof(uint64_t) ) {
-    return UUID4_EFAILURE;
-  }
-  return UUID4_ESUCCESS;
-}
-
-uint64_t uuid4_init_seed(uint64_t seed[2]) {
-    do {
-        if (_init_seed_once(seed) != UUID4_ESUCCESS) {
-            return 0;
-        }
-    } while (seed[0] == 0 && seed[1] == 0);
-    return seed[0] + seed[1];
-}
-
-/****************************************************************************/
 
 static uint64_t _uuid4_generate(uint64_t (*xs128)(uint64_t s[2]),
                                 uint64_t seed[2],

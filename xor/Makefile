@@ -1,9 +1,12 @@
 all: uuid4 check
 
-scheck: uuid4.h xorshift.h main.c uuid4.c xorshift.c
+SRC=main.c uuid4.c seed.c xorjump.c xorshift.c xorfile.c xorstream.c
+OBJ=$(patsubst %.c, %.o, $(SRC))
+
+scheck: $(SRC)
 	@cppcheck --enable=all --inconclusive --std=posix $^
 
-uuid4: main.o uuid4.o xorshift.o
+uuid4: $(OBJ)
 
 dieharder.txt: uuid4.h xorshift.h main.c uuid4.c xorshift.c
 	./uuid4 -b -o 1000 | dieharder -a > $@

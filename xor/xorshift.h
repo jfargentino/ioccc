@@ -1,7 +1,6 @@
 #ifndef XORSHIFT_H
 #define XORSHIFT_H
 
-#include <stdbool.h>
 #include <stdint.h>
 
 /* Algorithm "xor" from p. 4 of Marsaglia, "Xorshift RNGs" */
@@ -111,19 +110,6 @@ uint64_t xorshift128plus(uint64_t seed[static 2]);
  * See <http://creativecommons.org/publicdomain/zero/1.0/>.
  */
 uint64_t xoroshiro128plus(uint64_t seed[static 2]);
-
-/*
- * This is the jump function for the generator. It is equivalent
- * to 2^64 calls to xoroshiro128plus(); it can be used to generate 2^64
- * non-overlapping subsequences for parallel computations.
- *
- * To the extent possible under law, the author has dedicated all copyright
- * and related and neighboring rights to this software to the public domain
- * worldwide. This software is distributed without any warranty.
- *
- * See <http://creativecommons.org/publicdomain/zero/1.0/>.
- */
-uint64_t xorshift128_jump (uint64_t seed[static 2], bool xoro);
 
 #endif
 
