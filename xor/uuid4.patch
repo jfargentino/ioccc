@@ -1,0 +1,15 @@
+diff --git a/src/uuid4.c b/src/uuid4.c
+index bdbe3e8..554061a 100644
+--- a/src/uuid4.c
++++ b/src/uuid4.c
+@@ -81,6 +81,10 @@ int uuid4_generate(char *dst) {
+     } while (seed[0] == 0 && seed[1] == 0);
+     seeded = 1;
+   }
++
++  /* JFA for test only */
++  fprintf (stderr, "0x%016lX 0x%016lX\n", seed[0], seed[1]);
++
+   /* get random */
+   s.word[0] = xorshift128plus(seed);
+   s.word[1] = xorshift128plus(seed);
