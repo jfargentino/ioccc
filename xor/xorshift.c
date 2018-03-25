@@ -41,6 +41,15 @@ uint32_t xorwow(uint32_t state[static 5]) {
 
 /****************************************************************************/
 
+uint64_t splitmix64 (uint64_t * seed) {
+	(*seed) += UINT64_C(0x9E3779B97F4A7C15); // next seed
+	(*seed)  = ((*seed) ^ ((*seed) >> 30)) * UINT64_C(0xBF58476D1CE4E5B9);
+	(*seed)  = ((*seed) ^ ((*seed) >> 27)) * UINT64_C(0x94D049BB133111EB);
+	return (*seed) ^ ((*seed) >> 31);
+}
+
+/****************************************************************************/
+
 uint64_t xorshift64star(uint64_t * state) {
 	uint64_t x = *state;
 	x ^= x >> 12; // a
