@@ -1,10 +1,16 @@
 all: uuid4 check
 
-uuid4: main.o uuid4.o xorshift128.o
+scheck: uuid4.h xorshift.h main.c uuid4.c xorshift.c
+	@cppcheck --enable=all --inconclusive --std=posix $^
+
+uuid4: main.o uuid4.o xorshift.o
+
+dieharder.txt: uuid4.h xorshift.h main.c uuid4.c xorshift.c
+	./uuid4 -b -o 1000 | dieharder -a > $@
 
 clean:
-	@rm -v uuid4 main.o uuid4.o xorshift128.o .SEED .UUID*
-	@cd orig/uuid4/ && git reset --hard && cd ../..
+	@rm -v uuid4 main.o uuid4.o xorshift.o .SEED .UUID* dieharder.txt
+	@cd orig/uuid4/ && git reset --hard aa make clean && cd ../..
 
 ref: orig/uuid4/example/example
 
@@ -15,7 +21,7 @@ orig/uuid4/example/example: uuid4.patch orig/uuid4/src/uuid4.c orig/uuid4/exampl
 check: uuid4 ref check.sh
 	@./check.sh
 
-.PHONY = clean check
+.PHONY = clean check scheck
 
 #CC=clang-5.0
 CC=gcc

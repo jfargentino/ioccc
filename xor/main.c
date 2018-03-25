@@ -1,5 +1,5 @@
 #include "uuid4.h"
-#include "xorshift128.h"
+#include "xorshift.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -105,18 +105,20 @@ int main (int argc, char ** argv) {
     clock_gettime (CLOCK_MONOTONIC, &t1);
     if ( (bench) && (jump > 0) ) {
         long ns = _dt (&t1, &t0);
-        fprintf (stdout,
+        fprintf (stderr,
                  "%ldns/jump, %ldns for %d jump(s), resolution %ld.%09ldns\n",
                  ns/jump, ns, jump, res.tv_sec, res.tv_nsec);
     }
 
     int l = loop;
     while (l) {
-        char dst[UUID4_LEN];
-        root = xoro ? uuid4_generate_xoro (seed, dst)
-                    : uuid4_generate (seed, dst);
-        if (!bench) {
-            fprintf (stdout, "%*.*s\n", UUID4_LEN-1, UUID4_LEN-1, dst);
+        char uuid[UUID4_LEN];
+        root = xoro ? uuid4_generate_xoro (seed, uuid)
+                    : uuid4_generate (seed, uuid);
+        if (bench) {
+            fwrite (seed, sizeof(uint64_t), 2, stdout);
+        } else {
+            fprintf (stdout, "%*.*s\n", UUID4_LEN-1, UUID4_LEN-1, uuid);
         }
         _VERBOSE_print_seed (verbose, seed);
         l --;
@@ -125,7 +127,7 @@ int main (int argc, char ** argv) {
     clock_gettime (CLOCK_MONOTONIC, &t0);
     if ( (bench) && (loop > 0) ) {
         long ns = _dt (&t0, &t1);
-        fprintf (stdout,
+        fprintf (stderr,
                  "%ldns/uuid, %ldns for %d uuid(s), resolution %ld.%09ldns\n",
                  ns/loop, ns, loop, res.tv_sec, res.tv_nsec);
     }

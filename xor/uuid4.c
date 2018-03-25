@@ -5,7 +5,7 @@
  * under the terms of the MIT license. See LICENSE for details.
  */
 
-#include "xorshift128.h"
+#include "xorshift.h"
 #include "uuid4.h"
 #include <stdio.h>
 
