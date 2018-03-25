@@ -2,21 +2,8 @@
 #include "xorshift128.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include <unistd.h>
-
-static int _scmp (char const * left, char const * right) {
-    if (left == NULL) {
-        return (right == NULL) ? 0 : -1;
-    }
-    if (right == NULL) {
-        return (left == NULL) ? 0 : +1;
-    }
-    while ( (*left != '\0') && (*right != '\0') && (*left == *right) ) {
-        left ++;
-        right ++;
-    }
-    return *left - *right;
-}
 
 #define _VERBOSE_print(verbose, file, fmt, ...) \
     if (verbose) { fprintf (file, fmt, ## __VA_ARGS__); }
@@ -25,8 +12,15 @@ static void _VERBOSE_print_seed (bool verbose, uint64_t seed[2]) {
     _VERBOSE_print (verbose, stderr, "0x%016lX 0x%016lX\n", seed[0], seed[1]);
 }
 
+static long _dt (struct timespec const * t1,
+                 struct timespec const * t0) {
+    return (t1->tv_sec - t0->tv_sec) * 1000000000
+                                     + (t1->tv_nsec - t0->tv_nsec);
+}
+
 int main (int argc, char ** argv) {
     
+    bool bench   = false;
     bool verbose = false;
     bool xoro    = false;
     uint64_t seed[2] = { 0 };
@@ -41,6 +35,11 @@ int main (int argc, char ** argv) {
         }
 
         switch (*argv[k]) {
+            
+            case 'b':
+            case 'B':
+            bench = true;
+            break;
             
             case 'v':
             case 'V':
@@ -88,20 +87,47 @@ int main (int argc, char ** argv) {
     }
     
     _VERBOSE_print_seed (verbose, seed);
+    
+    struct timespec res = { 0 };
+    clock_getres (CLOCK_MONOTONIC, &res);
 
-    while (jump) {
+    struct timespec t0 = { 0 };
+    clock_gettime (CLOCK_MONOTONIC, &t0);
+
+    int j = jump;
+    while (j) {
         root = xorshift128_jump (seed, xoro);
         _VERBOSE_print_seed (verbose, seed);
-        jump --;
+        j --;
     }
 
-    while (loop) {
+    struct timespec t1 = { 0 };
+    clock_gettime (CLOCK_MONOTONIC, &t1);
+    if ( (bench) && (jump > 0) ) {
+        long ns = _dt (&t1, &t0);
+        fprintf (stdout,
+                 "%ldns/jump, %ldns for %d jump(s), resolution %ld.%09ldns\n",
+                 ns/jump, ns, jump, res.tv_sec, res.tv_nsec);
+    }
+
+    int l = loop;
+    while (l) {
         char dst[UUID4_LEN];
         root = xoro ? uuid4_generate_xoro (seed, dst)
                     : uuid4_generate (seed, dst);
-        fprintf (stdout, "%*.*s\n", UUID4_LEN-1, UUID4_LEN-1, dst);
+        if (!bench) {
+            fprintf (stdout, "%*.*s\n", UUID4_LEN-1, UUID4_LEN-1, dst);
+        }
         _VERBOSE_print_seed (verbose, seed);
-        loop --;
+        l --;
+    }
+    
+    clock_gettime (CLOCK_MONOTONIC, &t0);
+    if ( (bench) && (loop > 0) ) {
+        long ns = _dt (&t0, &t1);
+        fprintf (stdout,
+                 "%ldns/uuid, %ldns for %d uuid(s), resolution %ld.%09ldns\n",
+                 ns/loop, ns, loop, res.tv_sec, res.tv_nsec);
     }
 
     exit (EXIT_SUCCESS);
