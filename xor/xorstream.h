@@ -15,6 +15,9 @@ enum xorshift_t {
     XORSHIFT_NB
 };
 
+int xorseed32_length (enum xorshift_t method);
+int xorseed64_length (enum xorshift_t method);
+
 uint32_t xorstream32(enum xorshift_t method, uint32_t * seed);
 uint64_t xorstream64(enum xorshift_t method, uint64_t * seed);
 

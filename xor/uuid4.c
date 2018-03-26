@@ -14,18 +14,17 @@ static uint64_t _uuid4_generate(uint64_t (*xs128)(uint64_t s[2]),
     char const * template = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
     char const * digit = "0123456789abcdef";
     union { unsigned char b[16]; uint64_t word[2]; } s;
-    int i, n;
     /* get random */
     s.word[0] = xs128(seed);
     s.word[1] = xs128(seed);
     /* build string */
-    i = 0;
+    int k = 0;
     while (*template) {
-        n = s.b[i >> 1];
-        n = (i & 1) ? (n >> 4) : (n & 0xf);
+        int n = s.b[k >> 1];
+            n = (k & 1) ? (n >> 4) : (n & 0xf);
         switch (*template) {
-            case 'x' : *dst = digit[n];             i++; break;
-            case 'y' : *dst = digit[(n & 0x3) + 8]; i++; break;
+            case 'x' : *dst = digit[n];             k++; break;
+            case 'y' : *dst = digit[(n & 0x3) + 8]; k++; break;
             default  : *dst = *template;
         }
         dst++, template++;

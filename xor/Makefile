@@ -1,4 +1,4 @@
-all: uuid4 check
+all: check
 
 SRC=main.c uuid4.c seed.c xorjump.c xorshift.c xorfile.c xorstream.c
 OBJ=$(patsubst %.c, %.o, $(SRC))
@@ -8,23 +8,35 @@ scheck: $(SRC)
 
 uuid4: $(OBJ)
 
-dieharder.txt: uuid4.h xorshift.h main.c uuid4.c xorshift.c
-	./uuid4 -b -o 1000 | dieharder -a > $@
+DIEHARDER=xorshift32 xorshift128 xorwow splitmix64 xorshift64star \
+		  xorshift1024star xorshift128plus xoroshiro128plus
 
-clean:
-	@rm -v uuid4 main.o uuid4.o xorshift.o .SEED .UUID* dieharder.txt
-	@cd orig/uuid4/ && git reset --hard aa make clean && cd ../..
+$(DIEHARDER): $(SRC)
+	./uuid4 -b -x $@ 32768 | dieharder -a > $@.txt
 
-ref: orig/uuid4/example/example
+dieharder: $(DIEHARDER)
 
-orig/uuid4/example/example: uuid4.patch orig/uuid4/src/uuid4.c orig/uuid4/example/example.c
-	@patch -p1 -d orig/uuid4 < uuid4.patch
+REF=orig/uuid4/example/example
+REF_SRC=orig/uuid4/src/uuid4.c orig/uuid4/example/example.c
+
+$(REF): uuid4.patch $(REF_SRC)
+	@patch -p1 -N --dry-run -d orig/uuid4 < uuid4.patch \
+		&& patch -p1 -N -d orig/uuid4 < uuid4.patch
 	@cd orig/uuid4/example/ && ./build.sh && cd ../../..
+
+ref: $(REF)
 
 check: uuid4 ref check.sh
 	@./check.sh
 
-.PHONY = clean check scheck
+clean:
+	@rm -v uuid4 $(REF) $(OBJ)
+
+distclean: clean
+	@cd orig/uuid4/ && git reset --hard && cd ../..
+	@rm .SEED .UUID*
+
+.PHONY = distclean clean check scheck
 
 #CC=clang-5.0
 CC=gcc

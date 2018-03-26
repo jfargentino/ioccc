@@ -1,9 +1,44 @@
 #include "xorstream.h"
 #include "xorshift.h"
+ 
+/******************************************************************************/
+
+int xorseed32_length (enum xorshift_t method) {
+    switch (method) {
+        case XORSHIFT32:       return 1;
+        case XORSHIFT128:      return 4;
+        case XORWOW:           return 5;
+        case SPLITMIX64:       return 2;  // uint64_t
+        case XORSHIFT64STAR:   return 2;  // uint64_t
+        case XORSHIFT1024STAR: return 32; // uint64_t
+        case XORSHIFT128PLUS:  return 4;  // uint64_t
+        case XOROSHIRO128PLUS: return 4;  // uint64_t
+        default:               return 0;
+    }
+    return -1;
+}
+
+int xorseed64_length (enum xorshift_t method) {
+    switch (method) {
+        case XORSHIFT32:       return 1; // uint32_t
+        case XORSHIFT128:      return 2; // uint32_t
+        case XORWOW:           return 3; // uint32_t
+        case SPLITMIX64:       return 1; 
+        case XORSHIFT64STAR:   return 1;
+        case XORSHIFT1024STAR: return 16;
+        case XORSHIFT128PLUS:  return 2;
+        case XOROSHIRO128PLUS: return 2;
+        default:               return 0;
+    }
+    return -1;
+}
+
+/******************************************************************************/
 
 static uint32_t _u64to32 (uint64_t x) {
     union { uint32_t half[2]; uint64_t word; } y;
     y.word = x;
+    // TODO other op(s)
     return y.half[0] ^ y.half[1];
 }
 
