@@ -12,7 +12,8 @@ DIEHARDER=xorshift32 xorshift128 xorwow splitmix64 xorshift64star \
 		  xorshift1024star xorshift128plus xoroshiro128plus
 
 $(DIEHARDER): $(SRC)
-	./uuid4 -b -x $@ 32768 | dieharder -a > $@.txt
+	@./uuid4 -b -x $@ 32768 | dieharder -a > $@.txt
+	@grep WEAK $@
 
 dieharder: $(DIEHARDER)
 

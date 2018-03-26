@@ -8,9 +8,12 @@ enum {
     UUID4_EFAILURE = -1
 };
 
+static char const * const RANDOM_FILE_NAME = "/dev/urandom";
+//static char const * const RANDOM_FILE_NAME = "/dev/random";
+
 #define _init_once(type_t, seed, seed_len)                                 \
     static type_t _init_##type_t##_once (type_t * seed, int seed_len) {    \
-        FILE *fp = fopen("/dev/urandom", "rb");                            \
+        FILE *fp = fopen(RANDOM_FILE_NAME, "rb");                          \
         if (!fp) {                                                         \
             return UUID4_EFAILURE;                                         \
         }                                                                  \

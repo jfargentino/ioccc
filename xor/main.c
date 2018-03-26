@@ -9,6 +9,31 @@
 #include <time.h>
 #include <unistd.h>
 
+/*****************************************************************************/
+
+static void usage (FILE * file, char const * argv0) {
+    fprintf (file,
+"\n%s [-x XORSHIFT] [-b] [-t] [-v] [-o] [-s SEED0 SEED1] [-j] [-l] [-h] [LOOP]\n\n",
+             argv0);
+    fprintf (file, "Print LOOP (1 per default) uuid4\n");
+    fprintf (file, "\t-x XORSHIFT to benchmark an algo, see \"-l\"(*).\n");
+    fprintf (file, "\t-b for the benchmark mode (dieharder) in binary.\n");
+    fprintf (file, "\t-t for the benchmark mode in text.\n");
+    fprintf (file, "\t-v verbose mode, displays the seed on stderr.\n");
+    fprintf (file, "\t-o to use xoroshiro in uuid.\n");
+    fprintf (file, "\t-s SEED0 SEED1 to set the seed(**).\n");
+    fprintf (file, "\t-j each \"-j\" to jump 2^64 loop(***).\n");
+    fprintf (file, "\t-l to list xorshift available.\n");
+    fprintf (file, "\t-h to print this help.\n\n");
+    fprintf (file, "*  : Only xorshift128plus and xoroshiro128plus\n");
+    fprintf (file, "     are availables for uuid4.\n");
+    fprintf (file, "** : Only 2x64bits seed supported.\n");
+    fprintf (file, "***: Only xorshift128plus and xoroshiro128plus\n");
+    fprintf (file, "     are supporting jump.\n\n");
+}
+
+/*****************************************************************************/
+
 #define _VERBOSE_print(verbose, file, fmt, ...) \
     if (verbose) { fprintf (file, fmt, ## __VA_ARGS__); }
 
@@ -69,11 +94,15 @@ static void _VERBOSE_print_seed (bool verbose,
     }
 }
 
+/*****************************************************************************/
+
 static long _dt (struct timespec const * t1,
                  struct timespec const * t0) {
     return (t1->tv_sec - t0->tv_sec) * 1000000000
                                      + (t1->tv_nsec - t0->tv_nsec);
 }
+
+/*****************************************************************************/
 
 static char const * const XORSHIFT_LITERAL[XORSHIFT_NB] = {
     "xorshift32",
@@ -97,30 +126,13 @@ static enum xorshift_t str2xorshift (char * const str) {
     return x;
 }
 
-static void usage (FILE * file, char const * argv0) {
-    fprintf (file,
-"\n%s [-x XORSHIFT] [-b] [-v] [-o] [-s SEED0 SEED1] [-j] [-l] [-h] [LOOP]\n\n",
-             argv0);
-    fprintf (file, "Print LOOP (1 per default) uuid4\n");
-    fprintf (file, "\t-x XORSHIFT to benchmark an algo, see \"-l\"(*).\n");
-    fprintf (file, "\t-b for the benchmark mode (dieharder).\n");
-    fprintf (file, "\t-v verbose mode, displays the seed.\n");
-    fprintf (file, "\t-o to use xoroshiro in uuid.\n");
-    fprintf (file, "\t-s SEED0 SEED1 to set the seed(**).\n");
-    fprintf (file, "\t-j each \"-j\" to jump 2^64 loop(***).\n");
-    fprintf (file, "\t-l to list xorshift available.\n");
-    fprintf (file, "\t-h to print this help.\n\n");
-    fprintf (file, "*  : Only xorshift128plus and xoroshiro128plus\n");
-    fprintf (file, "     are availables for uuid4.\n");
-    fprintf (file, "** : Only 2x64bits seed supported.\n");
-    fprintf (file, "***: Only xorshift128plus and xoroshiro128plus\n");
-    fprintf (file, "     are supporting jump.\n\n");
-}
+/*****************************************************************************/
 
 int main (int argc, char ** argv) {
     
     enum xorshift_t xor_shift = XORSHIFT128PLUS;
     bool bench   = false;
+    bool text    = false;
     bool verbose = false;
     bool xoro    = false;
     uint64_t seed[16] = { 0 };
@@ -170,6 +182,12 @@ int main (int argc, char ** argv) {
             case 'b':
             case 'B':
             bench = true;
+            break;
+            
+            case 't':
+            case 'T':
+            bench = true;
+            text  = true;
             break;
             
             case 'v':
@@ -243,8 +261,15 @@ int main (int argc, char ** argv) {
 
     if (bench) {
         // spit on stdout for dieharder
-        xorbin32 (stdout, loop, xor_shift, seed);
-        //xorhex (stdout, loop, xor_shift, seed);
+        if (text) {
+            if (xor_shift < SPLITMIX64) {
+                xorhex32 (stdout, loop, xor_shift, seed);
+            } else {
+                xorhex64 (stdout, loop, xor_shift, seed);
+            }
+        } else {
+            xorbin32 (stdout, loop, xor_shift, seed);
+        }
     } else {
         // Print UUID4
         while (loop > 0) {
@@ -261,9 +286,10 @@ int main (int argc, char ** argv) {
     if ( (bench) && (loop > 0) ) {
         long ns = _dt (&t0, &t1);
         fprintf (stderr,
-                 "%ldns/xorshift, %ldns for %d uuid(s),\n"
+                 "%ldns/%s, %ldns for %d loops,\n"
                  "resolution %ld.%09ldns\n",
-                 ns/loop, ns, loop, res.tv_sec, res.tv_nsec);
+                 ns/loop, XORSHIFT_LITERAL[xor_shift], ns, loop,
+                 res.tv_sec, res.tv_nsec);
     }
 
     exit (EXIT_SUCCESS);
