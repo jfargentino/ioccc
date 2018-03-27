@@ -2,6 +2,17 @@
 
 /****************************************************************************/
 
+uint32_t xorshift32_abck(uint32_t * seed, int a, int b, int c, uint32_t k) {
+	uint32_t x = *seed;
+	x ^= x >> a;
+	x ^= x << b;
+	x ^= x >> c;
+	*seed = x;
+	return x * k;
+}
+
+/****************************************************************************/
+// xorshift32_abck(seed, 13, 17, 15, 1)
 uint32_t xorshift32(uint32_t * seed) {
 	uint32_t x = *seed;
 	x ^= x << 13;
@@ -44,7 +55,7 @@ uint32_t xorwow(uint32_t seed[static 5]) {
 /****************************************************************************/
 
 uint64_t splitmix64 (uint64_t * seed) {
-	(*seed) += UINT64_C(0x9E3779B97F4A7C15); // next seed
+	(*seed) += UINT64_C(0x9E3779B97F4A7C15);
 	(*seed)  = ((*seed) ^ ((*seed) >> 30)) * UINT64_C(0xBF58476D1CE4E5B9);
 	(*seed)  = ((*seed) ^ ((*seed) >> 27)) * UINT64_C(0x94D049BB133111EB);
 	return (*seed) ^ ((*seed) >> 31);
@@ -52,13 +63,24 @@ uint64_t splitmix64 (uint64_t * seed) {
 
 /****************************************************************************/
 
+uint64_t xorshift64_abck(uint64_t * seed, int a, int b, int c, uint64_t k) {
+	uint64_t x = *seed;
+	x ^= x >> a;
+	x ^= x << b;
+	x ^= x >> c;
+	*seed = x;
+	return x * k;
+}
+
+/****************************************************************************/
+// xorshift64_abck(seed, 12, 25, 27, 0x2545F4914F6CDD1D)
 uint64_t xorshift64star(uint64_t * seed) {
 	uint64_t x = *seed;
 	x ^= x >> 12; // a
 	x ^= x << 25; // b
 	x ^= x >> 27; // c
 	*seed = x;
-	return x * 0x2545F4914F6CDD1D;
+	return x * UINT64_C(0x2545F4914F6CDD1D);
 }
 
 /****************************************************************************/
@@ -71,7 +93,7 @@ uint64_t xorshift1024star(uint64_t seed[static 16]) {
 	s1 ^= s1 >> 11; // b
 	s1 ^= s0 ^ (s0 >> 30); // c
 	seed[p] = s1;
-	return s1 * (uint64_t)1181783497276652981;
+	return s1 * UINT64_C(1181783497276652981);
 }
 
 /****************************************************************************/

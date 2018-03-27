@@ -3,6 +3,12 @@
 
 #include <stdint.h>
 
+// a, b & c < 32
+uint32_t xorshift32_abck(uint32_t * seed, int a, int b, int c, uint32_t k);
+
+// a, b & c < 64
+uint64_t xorshift64_abck(uint64_t * seed, int a, int b, int c, uint64_t k);
+
 /* Algorithm "xor" from p. 4 of Marsaglia, "Xorshift RNGs" */
 uint32_t xorshift32(uint32_t * seed);
 
