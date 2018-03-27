@@ -29,15 +29,8 @@ void xorbin(FILE * file, uint32_t round,
         xorbin32(file, round, method, seed32);
         break;
 
-        case SPLITMIX64:
-        case XORSHIFT64STAR:
-        case XORSHIFT1024STAR:
-        case XORSHIFT128PLUS:
-        case XOROSHIRO128PLUS:
-        xorbin64(file, round, method, (uint64_t*)seed32);
-        break;
-
         default:
+        xorbin64(file, round, method, (uint64_t*)seed32);
         break;
 
     }
@@ -70,15 +63,8 @@ void xorhex(FILE * file, uint32_t round,
         xorhex32(file, round, method, seed32);
         break;
 
-        case SPLITMIX64:
-        case XORSHIFT64STAR:
-        case XORSHIFT1024STAR:
-        case XORSHIFT128PLUS:
-        case XOROSHIRO128PLUS:
-        xorhex64(file, round, method, (uint64_t*)seed32);
-        break;
-
         default:
+        xorhex64(file, round, method, (uint64_t*)seed32);
         break;
 
     }

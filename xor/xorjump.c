@@ -39,7 +39,7 @@ uint64_t xorshift128_jump (uint64_t seed[2], bool xoro) {
 
 /* This is the jump function for the xorshift1024star generator.
  * It is equivalent to 2^512 calls to next(); it can be used to generate 2^512
-   non-overlapping subsequences for parallel computations. */
+   non-overlapping subsequences for parallel computations.
 
 void jump(void) {
 	static const uint64_t JUMP[] = { 0x84242f96eca9c41d,
@@ -62,4 +62,5 @@ void jump(void) {
 	for(int j = 0; j < 16; j++)
 		s[(j + p) & 15] = t[j];
 }
+ */
 

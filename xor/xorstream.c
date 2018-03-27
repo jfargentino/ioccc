@@ -8,11 +8,14 @@ int xorseed32_length (enum xorshift_t method) {
         case XORSHIFT32:       return 1;
         case XORSHIFT128:      return 4;
         case XORWOW:           return 5;
-        case SPLITMIX64:       return 2;  // uint64_t
-        case XORSHIFT64STAR:   return 2;  // uint64_t
-        case XORSHIFT1024STAR: return 32; // uint64_t
-        case XORSHIFT128PLUS:  return 4;  // uint64_t
-        case XOROSHIRO128PLUS: return 4;  // uint64_t
+        case SPLITMIX64:       return 2;   // uint64_t
+        case XORSHIFT64STAR:   return 2;   // uint64_t
+        case XORSHIFT116PLUS:  return 4;   // uint64_t
+        case LEHMER128:        return 4;   // uint64_t
+        case XORSHIFT128PLUS:  return 4;   // uint64_t
+        case XOROSHIRO128PLUS: return 4;   // uint64_t
+        case XORSHIFT1024STAR: return 32;  // uint64_t
+        case XORSHIFT4096STAR: return 128; // uint64_t
         default:               return 0;
     }
     return -1;
@@ -23,11 +26,14 @@ int xorseed64_length (enum xorshift_t method) {
         case XORSHIFT32:       return 1; // uint32_t
         case XORSHIFT128:      return 2; // uint32_t
         case XORWOW:           return 3; // uint32_t
-        case SPLITMIX64:       return 1; 
+        case SPLITMIX64:       return 1;
         case XORSHIFT64STAR:   return 1;
-        case XORSHIFT1024STAR: return 16;
+        case XORSHIFT116PLUS:  return 2;
+        case LEHMER128:        return 2;
         case XORSHIFT128PLUS:  return 2;
         case XOROSHIRO128PLUS: return 2;
+        case XORSHIFT1024STAR: return 16;
+        case XORSHIFT4096STAR: return 64;
         default:               return 0;
     }
     return -1;
@@ -58,12 +64,18 @@ uint32_t xorstream32(enum xorshift_t method, uint32_t * seed32) {
 
         case XORSHIFT64STAR:   return _u64to32(xorshift64star(seed64));
 
-        case XORSHIFT1024STAR: return _u64to32(xorshift1024star(seed64));
+        case XORSHIFT116PLUS:  return _u64to32(xorshift116plus(seed64));
+        
+        case LEHMER128:        return _u64to32(lehmer128(seed64));
 
         case XORSHIFT128PLUS:  return _u64to32(xorshift128plus(seed64));
 
         case XOROSHIRO128PLUS: return _u64to32(xoroshiro128plus(seed64));
 
+        case XORSHIFT1024STAR: return _u64to32(xorshift1024star(seed64));
+        
+        case XORSHIFT4096STAR: return _u64to32(xorshift4096star(seed64));
+                               
         default:               break;
 
     }
@@ -98,11 +110,17 @@ uint64_t xorstream64(enum xorshift_t method, uint64_t * seed64) {
 
         case XORSHIFT64STAR:   return xorshift64star(seed64);
 
-        case XORSHIFT1024STAR: return xorshift1024star(seed64);
+        case XORSHIFT116PLUS:  return xorshift116plus(seed64);
+        
+        case LEHMER128:        return lehmer128(seed64);
 
         case XORSHIFT128PLUS:  return xorshift128plus(seed64);
 
         case XOROSHIRO128PLUS: return xoroshiro128plus(seed64);
+
+        case XORSHIFT1024STAR: return xorshift1024star(seed64);
+        
+        case XORSHIFT4096STAR: return xorshift4096star(seed64);
 
         default:               break;
 

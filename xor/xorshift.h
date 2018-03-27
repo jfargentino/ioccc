@@ -3,30 +3,7 @@
 
 #include <stdint.h>
 
-// Low-level and general functions //////////////////////////////////////////////////////////////
-static inline uint32_t xorlshift32 (uint32_t x, int a) {
-    return x ^ ( x << a);
-}
-
-static inline uint32_t xorrshift32 (uint32_t x, int a) {
-    return x ^ ( x >> a);
-}
-
-static inline uint64_t xorlshift64 (uint64_t x, int a) {
-    return x ^ ( x << a);
-}
-
-static inline uint64_t xorrshift64 (uint64_t x, int a) {
-    return x ^ ( x >> a);
-}
-
-// a, b & c < 32
-uint32_t xorshift32_abck(uint32_t * seed, int a, int b, int c, uint32_t k);
-
-// a, b & c < 64
-uint64_t xorshift64_abck(uint64_t * seed, int a, int b, int c, uint64_t k);
-
-/////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 /* Algorithm "xor" from p. 4 of Marsaglia, "Xorshift RNGs" */
 uint32_t xorshift32(uint32_t * seed);
 
@@ -58,36 +35,54 @@ uint64_t splitmix64 (uint64_t * seed);
 uint64_t xorshift64star(uint64_t * seed);
 
 /*
- * NOTE: as of 2017-10-08, this generator has a different multiplier (a
- * fixed-point representation of the golden ratio), which eliminates
- * linear dependencies from one of the lowest bits. The previous
- * multiplier was 1181783497276652981 (M_8 in the paper). If you need to
- * tell apart the two generators, you can refer to this generator as
- * xorshift1024*f and to the previous one as xorshift1024*M_8.
+ * This generator is a variant of xorshift128+ for dynamic languages, such
+ * as Erlang, that can use only 58 bits of a 64-bit integer. Only the lower
+ * 58 bits of each state word are valid (the upper six are zeroes).
+ * 
+ * This generator passes BigCrush without systematic failures, but due to
+ * the relatively short period it is acceptable only for applications with
+ * a mild amount of parallelism; otherwise, use a xorshift1024* generator.
  *
- * This is a fast, high-quality generator. If 1024 bits of state are too
- * much, try a xorshift128+ or xoroshiro128+ generator.
+ * The state must be seeded so that the lower 58 bits of s[ 0 ] and s[ 1 ]
+ * are not all zeroes. If you have a nonzero 64-bit seed, we suggest to
+ * pass it twice through MurmurHash3's avalanching function and take the
+ * lower 58 bits, taking care that they are not all zeroes (you can apply
+ * the avalanching function again if this happens).
  *
- * Note that the two lowest bits of this generator are LFSRs of degree
- * 1024, and thus will fail binary rank tests. The other bits needs a much
- * higher degree to be represented as LFSRs.
- *
- * We suggest to use a sign test to extract a random Boolean value, and
- * right shifts to extract subsets of bits.
- *
- * The state must be seeded so that it is not everywhere zero. If you have
- * a 64-bit seed, we suggest to seed a splitmix64 or xorshift64* generator and
- * use its output to fill s.
- *
- * Written in 2014 by Sebastiano Vigna (vigna@acm.org)
+ * Written in 2014 by Sebastiano Vigna (vigna@acm.org) and 
+ * Kenji Rikitake (kenji.rikitake@acm.org).
  *
  * To the extent possible under law, the author has dedicated all copyright
  * and related and neighboring rights to this software to the public domain
  * worldwide. This software is distributed without any warranty.
  *
- * See <http://creativecommons.org/publicdomain/zero/1.0/>. 
+ * See <http://creativecommons.org/publicdomain/zero/1.0/>.
  */
-uint64_t xorshift1024star(uint64_t seed[static 16]);
+uint64_t xorshift116plus(int64_t seed[static 2]);
+
+/*
+ * This is probably the oldest known PRNG: a Lehmer generator (a.k.a.
+ * multiplicative LCG). It simply multiplies the current state by a
+ * constant. It is a very fast generator passing BigCrush, albeit slower
+ * than xoroshiro128+, and with a smaller period (2^126). It needs support
+ * for 128-bit integers from the compiler. The less significant bit,
+ * moreover, has shorter period 2^62, the next bit 2^63, etc.
+ *
+ * Note, however, that as 128-bit processor and compilers will become
+ * common this generator will likely become extremely fast. 
+ *
+ * The multiplier has been taken from
+ *
+ * Pierre L'Ecuyer. Tables of linear congruential generators of different
+ * sizes and good lattice structure. Math. Comput. 68, 225 (1999), 249-260.
+ *
+ * IMPORTANT: On big-endian architectures, the role of s[0] and s[1] must
+ * be exchanged.
+ *
+ * The state must be seeded with two 64-bit values, among which s[0] MUST be
+ * odd.
+ */
+uint64_t lehmer128(uint64_t seed[static 2]);
 
 /* xorshift128plus
  *
@@ -165,6 +160,99 @@ uint64_t xorshift128plus(uint64_t seed[static 2]);
  * See <http://creativecommons.org/publicdomain/zero/1.0/>.
  */
 uint64_t xoroshiro128plus(uint64_t seed[static 2]);
+
+/*
+ * This is a fast, high-quality generator. If 1024 bits of state are too
+ * much, try a xorshift128+ or xoroshiro128+ generator.
+ *
+ * Note that the two lowest bits of this generator are LFSRs of degree
+ * 1024, and thus will fail binary rank tests. The other bits needs a much
+ * higher degree to be represented as LFSRs.
+ *
+ * We suggest to use a sign test to extract a random Boolean value, and
+ * right shifts to extract subsets of bits.
+ *
+ * The state must be seeded so that it is not everywhere zero. If you have
+ * a 64-bit seed, we suggest to seed a splitmix64 or xorshift64* generator and
+ * use its output to fill s.
+ *
+ * NOTE: as of 2017-10-08, this generator has a different multiplier (a
+ * fixed-point representation of the golden ratio), which eliminates
+ * linear dependencies from one of the lowest bits. The previous
+ * multiplier was 1181783497276652981 (M_8 in the paper). If you need to
+ * tell apart the two generators, you can refer to this generator as
+ * xorshift1024*f and to the previous one as xorshift1024*M_8.
+ *
+ * Written in 2014 by Sebastiano Vigna (vigna@acm.org)
+ *
+ * To the extent possible under law, the author has dedicated all copyright
+ * and related and neighboring rights to this software to the public domain
+ * worldwide. This software is distributed without any warranty.
+ *
+ * See <http://creativecommons.org/publicdomain/zero/1.0/>. 
+ */
+uint64_t xorshift1024star(uint64_t seed[static 16]);
+
+/*
+ * While you can use this generator, we rather suggest to use a
+ * xorshift1024* generator.
+ *
+ * The state must be seeded so that it is not everywhere zero. If you have
+ * a 64-bit seed,  we suggest to seed a xorshift64* generator and use its
+ * output to fill s.
+ *
+ *  Written in 2014 by Sebastiano Vigna (vigna@acm.org)
+ *
+ * To the extent possible under law, the author has dedicated all copyright
+ * and related and neighboring rights to this software to the public domain
+ * worldwide. This software is distributed without any warranty.
+ *
+ * See <http://creativecommons.org/publicdomain/zero/1.0/>.
+ */
+uint64_t xorshift4096star(uint64_t seed[static 64]);
+
+
+// Low-level and general functions ////////////////////////////////////////////
+
+static inline uint32_t _xor_rshift32 (uint32_t x, int k) {
+    return x ^ ( x >> k);
+}
+
+static inline uint32_t _xor_lshift32 (uint32_t x, int k) {
+    return x ^ ( x << k);
+}
+
+static inline uint64_t _xor_rshift64 (uint64_t x, int k) {
+    return x ^ ( x >> k);
+}
+
+static inline uint64_t _xor_lshift64 (uint64_t x, int k) {
+    return x ^ ( x << k);
+}
+
+// xorshift32 is _xor_shift32_abc(seed, 13, 17, 15)
+// see the list of the (a,b,c) triplets in Marsaglia
+// a, b & c < 32
+static inline uint32_t _xor_shift32_abc (uint32_t * seed, int a, int b, int c) {
+    uint32_t x = *seed;
+    x = _xor_rshift32 (x, a);
+    x = _xor_lshift32 (x, b);
+    x = _xor_rshift32 (x, c);
+    *seed = x;
+    return x;
+}
+
+// xorshift64star is _xorshift64_abc(seed, 12, 25, 27) * 0x2545F4914F6CDD1D
+// see the list of the (a,b,c) triplets in Marsaglia
+// a, b & c < 64
+static inline uint64_t _xor_shift64_abc (uint64_t * seed, int a, int b, int c) {
+    uint64_t x = *seed;
+    x = _xor_rshift64 (x, a);
+    x = _xor_lshift64 (x, b);
+    x = _xor_rshift64 (x, c);
+    *seed = x;
+    return x;
+}
 
 #endif
 

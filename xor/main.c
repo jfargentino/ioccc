@@ -67,6 +67,15 @@ static void _VERBOSE_print_seed (bool verbose,
         _VERBOSE_print (verbose, stderr, "%016lX\n", *seed64);
         return;
         
+        case XORSHIFT116PLUS:
+        case LEHMER128:
+        case XORSHIFT128PLUS:
+        case XOROSHIRO128PLUS:
+        _VERBOSE_print (verbose, stderr,
+                        "%016lX %016lX\n",
+                        seed64[0], seed64[1]);
+        return;
+
         case XORSHIFT1024STAR:
         _VERBOSE_print (verbose, stderr,
                         "%016lX %016lX %016lX %016lX\n",
@@ -82,11 +91,14 @@ static void _VERBOSE_print_seed (bool verbose,
                         seed64[12], seed64[13], seed64[14], seed64[15]);
         return;
 
-        case XORSHIFT128PLUS:
-        case XOROSHIRO128PLUS:
-        _VERBOSE_print (verbose, stderr,
-                        "%016lX %016lX\n",
-                        seed64[0], seed64[1]);
+        case XORSHIFT4096STAR:
+        for (int k = 0; k < 8; k++) {
+            _VERBOSE_print (verbose, stderr,
+                            "%016lX %016lX %016lX %016lX "
+                            "%016lX %016lX %016lX %016lX\n",
+                            seed64[k+0], seed64[k+1], seed64[k+2], seed64[k+3],
+                            seed64[k+4], seed64[k+5], seed64[k+6], seed64[k+7]);
+        }
         return;
 
         default:
@@ -110,9 +122,12 @@ static char const * const XORSHIFT_LITERAL[XORSHIFT_NB] = {
     "xorwow",
     "splitmix64",
     "xorshift64star",
-    "xorshift1024star",
+    "xorshift116plus",
+    "lehmer128",
     "xorshift128plus",
     "xoroshiro128plus"
+    "xorshift1024star",
+    "xorshift4096star",
 };
 
 static enum xorshift_t str2xorshift (char * const str) {
@@ -268,6 +283,7 @@ int main (int argc, char ** argv) {
                 xorhex64 (stdout, loop, xor_shift, seed);
             }
         } else {
+            //xorbin64 (stdout, loop, xor_shift, seed);
             xorbin32 (stdout, loop, xor_shift, seed);
         }
     } else {
