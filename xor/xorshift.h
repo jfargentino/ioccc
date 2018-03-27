@@ -3,12 +3,30 @@
 
 #include <stdint.h>
 
+// Low-level and general functions //////////////////////////////////////////////////////////////
+static inline uint32_t xorlshift32 (uint32_t x, int a) {
+    return x ^ ( x << a);
+}
+
+static inline uint32_t xorrshift32 (uint32_t x, int a) {
+    return x ^ ( x >> a);
+}
+
+static inline uint64_t xorlshift64 (uint64_t x, int a) {
+    return x ^ ( x << a);
+}
+
+static inline uint64_t xorrshift64 (uint64_t x, int a) {
+    return x ^ ( x >> a);
+}
+
 // a, b & c < 32
 uint32_t xorshift32_abck(uint32_t * seed, int a, int b, int c, uint32_t k);
 
 // a, b & c < 64
 uint64_t xorshift64_abck(uint64_t * seed, int a, int b, int c, uint64_t k);
 
+/////////////////////////////////////////////////////////////////////////////////////////////////
 /* Algorithm "xor" from p. 4 of Marsaglia, "Xorshift RNGs" */
 uint32_t xorshift32(uint32_t * seed);
 
@@ -39,6 +57,36 @@ uint64_t splitmix64 (uint64_t * seed);
 
 uint64_t xorshift64star(uint64_t * seed);
 
+/*
+ * NOTE: as of 2017-10-08, this generator has a different multiplier (a
+ * fixed-point representation of the golden ratio), which eliminates
+ * linear dependencies from one of the lowest bits. The previous
+ * multiplier was 1181783497276652981 (M_8 in the paper). If you need to
+ * tell apart the two generators, you can refer to this generator as
+ * xorshift1024*f and to the previous one as xorshift1024*M_8.
+ *
+ * This is a fast, high-quality generator. If 1024 bits of state are too
+ * much, try a xorshift128+ or xoroshiro128+ generator.
+ *
+ * Note that the two lowest bits of this generator are LFSRs of degree
+ * 1024, and thus will fail binary rank tests. The other bits needs a much
+ * higher degree to be represented as LFSRs.
+ *
+ * We suggest to use a sign test to extract a random Boolean value, and
+ * right shifts to extract subsets of bits.
+ *
+ * The state must be seeded so that it is not everywhere zero. If you have
+ * a 64-bit seed, we suggest to seed a splitmix64 or xorshift64* generator and
+ * use its output to fill s.
+ *
+ * Written in 2014 by Sebastiano Vigna (vigna@acm.org)
+ *
+ * To the extent possible under law, the author has dedicated all copyright
+ * and related and neighboring rights to this software to the public domain
+ * worldwide. This software is distributed without any warranty.
+ *
+ * See <http://creativecommons.org/publicdomain/zero/1.0/>. 
+ */
 uint64_t xorshift1024star(uint64_t seed[static 16]);
 
 /* xorshift128plus
@@ -47,25 +95,26 @@ uint64_t xorshift1024star(uint64_t seed[static 16]);
  *
  * This generator has been replaced by xoroshiro128plus, which is
  * significantly faster and has better statistical properties.
-
+ *
  * It might be nonetheless useful for languages in which low-level rotate
  * instructions are not available. Due to the relatively short period it
  * is acceptable only for applications with a mild amount of parallelism;
  * otherwise, use a xorshift1024* generator.
-
+ *
  * Note that the lowest bit of this generator is an LFSR of degree 128;
  * thus, it will fail linearity tests. The next bit can be described by an
  * LFSR of degree 8256, but in the long run it will fail linearity tests,
  * too. The other bits needs a much higher degree to be represented as
  * LFSRs.
-
+ *
  * We suggest to use a sign test to extract a random Boolean value, and
  * right shifts to extract subsets of bits.
-
+ *
  * The state must be seeded so that it is not everywhere zero. If you have
  * a 64-bit seed, we suggest to seed a splitmix64 generator and use its
- * output to fill s.
-
+ * output to fill s. Or to pass it twice through MurmurHash3's avalanching
+ * function.
+ *
  * A previous version of this generator was adding the two halves of the
  * newly computed state. This version adds the two halves of the *current*
  * state (as xoroshiro128plus does), which improves speed due to better

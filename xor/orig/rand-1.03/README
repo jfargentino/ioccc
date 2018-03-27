@@ -1,0 +1,90 @@
+                     README file for random version 1.03
+                     ===================================
+
+This is free software. Absolutely no warranty is expressed or implied.
+
+
+Contents
+^^^^^^^^
+
+The following files are included:
+
+
+README     this file.
+
+
+ranut.f    uniform random number generator using the "generalized
+           Fibonacci" method with additive recurrences based on
+           primitive trinomials (or trinomials with large primitive
+           factors).  The Fortran code is designed to run fast on
+           vector processors.
+
+tranut.f   test program for ranut.f
+
+tranut.dat sample data for tranut.f
+
+tranut.txt output from test run using data tranut.dat,
+           e.g. ./tranut < tranut.dat > tranut.txt
+           Note - this excludes the 3000000 numbers written in hexadecimal
+           format on unit 11 (taking about 24 MB).
+
+tranut.out output from Marsaglia's Diehard program (1996 Linux version) 
+           using data generated on unit 11 by tranut with input tranut.dat
+           Note - the output of tranut on unit 11 has to be processed by 
+           Marsagia's asc2bin before input to Diehard.
+
+tranut-low.out  similar to tranut.out, but testing the low 32 of 49 bits
+           (testlow set to .true. in tranut.f)
+
+rannw.f    normal random number generator using a modification of
+           Wallace's method.
+
+trannw.f   test program for rannw.f
+
+trannw.dat sample data for trannw.f
+
+trannw.txt output from test run using data trannw.dat,
+           e.g. ./trannw < trannw.dat > trannw.txt
+           Note - this excludes the 3000000 numbers written in hexadecimal
+           format on unit 11 (taking about 24 MB).
+
+trannw.out output from Marsaglia's Diehard program (1996 Linux version) 
+           using data generated on unit 11 by trannw with input trannw.dat
+           Note - the output of trannw on unit 11 should be uniformly
+           (not normally) distributed. It has to be processed by 
+           Marsagia's asc2bin before input to Diehard.
+
+
+Compiling and running test programs
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+To compile on a Unix/Linux system, do something like
+
+               f77 -O -o tranut tranut.f ranut.f
+or
+               f77 -O -o trannw trannw.f rannw.f ranut.f
+
+To run the compiled test programs, do something like
+
+               ./tranut < tranut.dat
+or
+               ./trannw < trannw.dat
+
+The test programs will generate large files on Fortran unit 11.
+These are intended for input to Marsaglia's asc2bin program (see
+the comments in tranut.f).           
+
+
+Further information
+^^^^^^^^^^^^^^^^^^^
+For information on the theory, and further references, see
+http://web.comlab.ox.ac.uk/oucl/work/richard.brent/res05.html
+
+
+Richard Brent
+26 October 2001
+
+==============================================================================
+Prof Richard P. Brent                   Phone  +44-1865-283504
+Oxford University Computing Laboratory  FAX    +44-1865-273839
+358 Wolfson Building                    email  rpb@comlab.ox.ac.uk
+Parks Road, Oxford OX1 3QD, UK          http://www.comlab.ox.ac.uk/oucl/people

@@ -1,0 +1,23 @@
+Version 1.03 released 20020103
+is the same as version 1.02 except that the order of some declarations
+in ranut.f has been changed for compatibility with f2c (as suggested
+by Philip Leong).
+
+Version 1.02 released 20011028
+has improved comments, 
+improved error messages,
+some missing declarations added in test programs (tested with implicit none),
+and fix in trannw.f (which gave erroneous error for mean 0).
+
+Version 1.01 released 20011026-27
+has tranut.txt, trannw.txt, tranut-low.out added,
+new trannw.f (now similar to tranut.f),
+some typos in comments in ranut.f, rannw.f corrected,
+change in test data.
+Omitted overlapping sums test as seems erroneous.
+Fixed transformation to N(0,1) in testing 20011027.
+
+Version 1.00 released 20011026 (and mailed to Philip Leong)
+with ranut.f based on ranu4.f (with additional (r, s) pairs)
+rannw.f based on rann4.f (with f increased to 4, changes in alpha, beta).
+Omitted overlapping permutations test as seems to give erroneous results.
