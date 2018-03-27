@@ -8,6 +8,9 @@
 #include "xorshift.h"
 #include "uuid4.h"
 
+// TODO take a look at libuuid
+// TODO other xorshift
+
 static uint64_t _uuid4_generate(uint64_t (*xs128)(uint64_t s[2]),
                                 uint64_t seed[2],
                                 char dst[UUID4_LEN]) {

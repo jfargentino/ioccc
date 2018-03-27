@@ -13,7 +13,7 @@
 #define UUID4_VERSION "0.1.1"
 #define UUID4_LEN (32+5)
 
-#define  uuid4_init_seed(seed) seed128((uint32_t*)(seed))
+#define  uuid4_init_seed(seed) seed2x64(seed)
 uint64_t uuid4_generate(uint64_t seed[2], char dst[UUID4_LEN]);
 uint64_t uuid4_generate_xoro(uint64_t seed[2], char dst[UUID4_LEN]);
 
