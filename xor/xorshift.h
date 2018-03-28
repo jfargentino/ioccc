@@ -211,48 +211,5 @@ uint64_t xorshift1024star(uint64_t seed[static 16]);
  */
 uint64_t xorshift4096star(uint64_t seed[static 64]);
 
-
-// Low-level and general functions ////////////////////////////////////////////
-
-static inline uint32_t _xor_rshift32 (uint32_t x, int k) {
-    return x ^ ( x >> k);
-}
-
-static inline uint32_t _xor_lshift32 (uint32_t x, int k) {
-    return x ^ ( x << k);
-}
-
-static inline uint64_t _xor_rshift64 (uint64_t x, int k) {
-    return x ^ ( x >> k);
-}
-
-static inline uint64_t _xor_lshift64 (uint64_t x, int k) {
-    return x ^ ( x << k);
-}
-
-// xorshift32 is _xor_shift32_abc(seed, 13, 17, 15)
-// see the list of the (a,b,c) triplets in Marsaglia
-// a, b & c < 32
-static inline uint32_t _xor_shift32_abc (uint32_t * seed, int a, int b, int c) {
-    uint32_t x = *seed;
-    x = _xor_rshift32 (x, a);
-    x = _xor_lshift32 (x, b);
-    x = _xor_rshift32 (x, c);
-    *seed = x;
-    return x;
-}
-
-// xorshift64star is _xorshift64_abc(seed, 12, 25, 27) * 0x2545F4914F6CDD1D
-// see the list of the (a,b,c) triplets in Marsaglia
-// a, b & c < 64
-static inline uint64_t _xor_shift64_abc (uint64_t * seed, int a, int b, int c) {
-    uint64_t x = *seed;
-    x = _xor_rshift64 (x, a);
-    x = _xor_lshift64 (x, b);
-    x = _xor_rshift64 (x, c);
-    *seed = x;
-    return x;
-}
-
 #endif
 

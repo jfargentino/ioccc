@@ -1,10 +1,10 @@
-#include "xorshift.h"
+#include "_xorshift.h"
 
 /****************************************************************************/
 
 uint32_t xorshift32(uint32_t * seed) {
 #if 0
-    return _xor_shift32_abc(seed, 13, 27, 25);
+    return _xorshift32_abc(seed, 13, 27, 25);
 #else
     uint32_t x = *seed;
     x ^= x << 13;
@@ -59,7 +59,7 @@ uint64_t splitmix64 (uint64_t * seed) {
 /****************************************************************************/
 uint64_t xorshift64star(uint64_t * seed) {
 #if 0
-    return _xor_shift64_abc(seed, 12, 25, 27) * 0x2545F4914F6CDD1D;
+    return _xorshift64_abc(seed, 12, 25, 27) * 0x2545F4914F6CDD1D;
 #else
     uint64_t x = *seed;
     x ^= x >> 12; // a

@@ -1,19 +1,20 @@
 all: check
 
 SRC=main.c uuid4.c seed.c xorjump.c xorshift.c xorfile.c xorstream.c
+DEP=$(SRC) _xorshift.h
 OBJ=$(patsubst %.c, %.o, $(SRC))
 
-scheck: $(SRC)
+scheck: $(DEP)
 	@cppcheck --enable=all --inconclusive --std=posix $^
 
-uuid4: $(OBJ)
+uuid4: $(OBJ) _xorshift.h
 
 DIEHARDER=xorshift32 xorshift128 xorwow splitmix64 xorshift64star \
 		  xorshift1024star xorshift128plus xoroshiro128plus
 
-$(DIEHARDER): $(SRC)
+$(DIEHARDER): uuid4
 	@./uuid4 -b -x $@ 32768 | dieharder -a > $@.txt
-	@grep WEAK $@
+	@grep WEAK $@.txt
 
 dieharder: $(DIEHARDER)
 
