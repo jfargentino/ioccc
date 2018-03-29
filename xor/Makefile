@@ -1,13 +1,32 @@
 all: check
 
-SRC=main.c uuid4.c seed.c xorjump.c xorshift.c xorfile.c xorstream.c
-DEP=$(SRC) _xorshift.h
-OBJ=$(patsubst %.c, %.o, $(SRC))
+# uuid4 ########################################################################
+UUID_SRC=main.c uuid4.c seed.c xorjump.c xorshift.c xorfile.c xorstream.c
+UUID_DEP=$(UUID_SRC) _xorshift.h
+UUID_OBJ=$(patsubst %.c, %.o, $(UUID_SRC))
 
-scheck: $(DEP)
+uuid4: $(UUID_OBJ)
+
+marsaglia: marsaglia.c
+
+# reference implementations ####################################################
+
+ref: $(UUID_REF) marsaglia_ref
+
+UUID_REF=orig/uuid4/example/example
+UUID_REF_SRC=orig/uuid4/src/uuid4.c orig/uuid4/example/example.c
+
+$(UUID_REF): uuid4.patch $(UUID_REF_SRC)
+	@patch -p1 -N --dry-run -d orig/uuid4 < uuid4.patch \
+		&& patch -p1 -N -d orig/uuid4 < uuid4.patch
+	@cd orig/uuid4/example/ && ./build.sh && cd ../../..
+
+marsaglia_ref: marsaglia_ref.c
+	gcc $(CPPFLAGS) $^ -o $@
+
+# check and other tests ########################################################
+scheck: $(UUID_DEP)
 	@cppcheck --enable=all --inconclusive --std=posix $^
-
-uuid4: $(OBJ) _xorshift.h
 
 DIEHARDER=xorshift32 xorshift128 xorwow splitmix64 xorshift64star \
 		  xorshift1024star xorshift128plus xoroshiro128plus
@@ -18,25 +37,16 @@ $(DIEHARDER): uuid4
 
 dieharder: $(DIEHARDER)
 
-REF=orig/uuid4/example/example
-REF_SRC=orig/uuid4/src/uuid4.c orig/uuid4/example/example.c
-
-$(REF): uuid4.patch $(REF_SRC)
-	@patch -p1 -N --dry-run -d orig/uuid4 < uuid4.patch \
-		&& patch -p1 -N -d orig/uuid4 < uuid4.patch
-	@cd orig/uuid4/example/ && ./build.sh && cd ../../..
-
-ref: $(REF)
-
-check: uuid4 ref check.sh
+check: uuid4 marsaglia ref check.sh
 	@./check.sh
 
+# Misc #########################################################################
 clean:
-	@rm -v uuid4 $(REF) $(OBJ)
+	@rm -v uuid4 $(UUID_REF) $(UUID_OBJ) marsaglia_ref marsaglia
 
 distclean: clean
 	@cd orig/uuid4/ && git reset --hard && cd ../..
-	@rm .SEED .UUID*
+	@rm .SEED .UUID* .MARS*
 
 .PHONY = distclean clean check scheck
 
@@ -45,7 +55,6 @@ CC=gcc
 
 LDFLAGS+=-lrt
 
-# Misc #########################################################################
 #CPPFLAGS+=-std=c99
 CPPFLAGS+=-fstrict-aliasing -Wstrict-aliasing=2
 CPPFLAGS+=-Wall -Wextra
