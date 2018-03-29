@@ -224,8 +224,8 @@ int main (int argc, char ** argv) {
             }
             // TODO check endptr != argv[k+x]
             // TODO other seed size
-            seed[0] = strtoul (argv[k+1], NULL, 0);
-            seed[1] = strtoul (argv[k+2], NULL, 0);
+            seed[0] = strtoull (argv[k+1], NULL, 0);
+            seed[1] = strtoull (argv[k+2], NULL, 0);
             k += 2;
             break;
             
