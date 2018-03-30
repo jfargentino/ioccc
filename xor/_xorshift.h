@@ -1,31 +1,6 @@
 #ifndef _XORSHIFT_H
 #define _XORSHIFT_H
 
-////////////////////////////////////////////////////////////////////////////////
-int __(int*x,int y){return y?*x=*x>>y^__(x,'^'^'^'):*x;}
-////////////////////////////////////////////////////////////////////////////////
-int _(int*x,int y){return y?('^'^'^')[x]=(('^'^'^')[x])<<y^_(x,'^'^'^'):('^'^'^')[x];}
-////////////////////////////////////////////////////////////////////////////////
-   static
-   inline
- uint32_t           ___              (
- uint32_t            * sid           ,
- unsigned  int const * abc           ,
- unsigned  int         len)          {
- uint32_t k_sid_ =          '^'^'^'  ;
- unsigned  int k =          '^'^'^'  ;
-  while ( k      <   len  - '/'/'/') {
-	  k_sid_^= k      & '/'/'/'
-	? k[sid] ^ k[sid] >> k[abc] 
-	: k[sid] ^ k[sid] << k[abc]  ;
-	  k[sid] =   sid[ ++ k    ]  ;
-	} k_sid_^= k      & '/'/'/'
-	? k[sid] ^ k[sid] >> k[abc] 
-	: k[sid] ^ k[sid] << k[abc]  ;
-	  k[sid] = k_sid_;
-	  return   k[sid];           }
-////////////////////////////////////////////////////////////////////////////////
-
 // Low-level ///////////////////////////////////////////////////////////////////
 
 static inline uint32_t _xorr32 (uint32_t * x, unsigned int k) {
@@ -68,6 +43,9 @@ static inline uint32_t _xorshift32_lrl (uint32_t * seed,
 }
 
 
+#if defined XOB && XOB > 0
+    #include "xorshuft.h"
+#endif
 static inline uint32_t _xorshift_lrr ( uint32_t * seed,
                                        unsigned int seed_len,
                                        unsigned int a,
@@ -79,14 +57,16 @@ static inline uint32_t _xorshift_lrr ( uint32_t * seed,
         seed[k] = seed[k+1];
         k ++;
     }
+
+#if !defined XOB || XOB <= 0
     _xorl32(&seed0,   a);
-    //_(&seed0, a);
-    
-    //_xorr32(&seed0,   b);
-    __(&seed0,b);
-    
+    _xorr32(&seed0,   b);
     _xorr32(&seed[k], c);
-    //__(&seed[k],c);
+#else
+    _(&seed0, a);
+    __(&seed0,b);
+    __(&seed[k],c);
+#endif
     
     seed[k] = seed[k] ^ seed0;
     return seed[k];
