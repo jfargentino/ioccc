@@ -98,7 +98,7 @@ uint32_t _xor128bis(void) {
     static uint32_t seed[4] = { 123456789u, 362436069u,
                                 521288629u, 88675123u };
     unsigned int const abc[4] = { 20, 11, 27, 6 };
-    return _xorshift_ (seed, abc, 4);
+    return ___ (seed, abc, 4);
 }
 
 /**************************************************************************/
