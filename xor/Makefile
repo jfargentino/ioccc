@@ -55,6 +55,9 @@ CC=gcc
 
 LDFLAGS+=-lrt
 
+CPPFLAGS+=-DXOB=1
+CPPFLAGS+=-pedantic
+CPPFLAGS+=-pedantic-errors
 #CPPFLAGS+=-std=c99
 CPPFLAGS+=-fstrict-aliasing -Wstrict-aliasing=2
 CPPFLAGS+=-Wall -Wextra
@@ -91,8 +94,6 @@ CPPFLAGS+=-Wswitch-bool
 #CPPFLAGS+=-Wunused-const-variable
 #CPPFLAGS+=-Wframe-address
 # TODO #########################################################################
-CPPFLAGS+=-pedantic
-CPPFLAGS+=-pedantic-errors
 CPPFLAGS+=-w 
 CPPFLAGS+=-Waggregate-return
 CPPFLAGS+=-Wcomment

@@ -43,8 +43,8 @@ static inline uint32_t _xorshift32_lrl (uint32_t * seed,
 }
 
 
+#include "xobshuft.h"
 #if defined XOB && XOB > 0
-    #include "xorshuft.h"
 #endif
 static inline uint32_t _xorshift_lrr ( uint32_t * seed,
                                        unsigned int seed_len,
@@ -63,9 +63,9 @@ static inline uint32_t _xorshift_lrr ( uint32_t * seed,
     _xorr32(&seed0,   b);
     _xorr32(&seed[k], c);
 #else
-    _(&seed0, a);
-    __(&seed0,b);
-    __(&seed[k],c);
+    x0rsh1(&seed0,1,a);
+    x0rsh1(&seed0,0,b);
+    x0rsh1(&seed[k],0,c);
 #endif
     
     seed[k] = seed[k] ^ seed0;
